@@ -24,7 +24,7 @@ import java.util.Iterator;
 /**
  * Created by Dark on 7/20/2015.
  */
-@Mod(modid = "aiimprovements", name = "AI Improvements", acceptableRemoteVersions = "*", canBeDeactivated = true)
+@Mod(modid = "aiimprovements", name = "AI Improvements", version = AIImprovements.VERSION, acceptableRemoteVersions = "*", canBeDeactivated = true)
 public class AIImprovements
 {
 
@@ -73,6 +73,7 @@ public class AIImprovements
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent event)
     {
+        //TODO
         Entity entity = event.entity;
         if (entity instanceof EntityLiving)
         {

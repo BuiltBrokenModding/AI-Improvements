@@ -24,12 +24,14 @@ public class FixedEntityLookHelper extends EntityLookHelper
             this.isLooking = false;
 
             double d0 = this.posX - this.entity.posX;
-            double d1 = this.posY - (this.entity.posY + (double)this.entity.getEyeHeight());
+            double d1 = this.posY - (this.entity.posY + (double) this.entity.getEyeHeight());
             double d2 = this.posZ - this.entity.posZ;
             double d3 = (double) MathHelper.sqrt_double(d0 * d0 + d2 * d2);
 
-            float f = (float)(tan(d2, d0) * 180.0D / Math.PI) - 90.0F;
-            float f1 = (float)(-(tan(d1, d3) * 180.0D / Math.PI));
+            //I'm sure the tan function could be replaced with sin and cos but would take more complex math
+            //The trade off
+            float f = (float) (tan(d2, d0) * 180.0D / Math.PI) - 90.0F;
+            float f1 = (float) (-(tan(d1, d3) * 180.0D / Math.PI));
             this.entity.rotationPitch = this.updateRotation(this.entity.rotationPitch, f1, this.deltaLookPitch);
             this.entity.rotationYawHead = this.updateRotation(this.entity.rotationYawHead, f, this.deltaLookYaw);
         }
@@ -55,9 +57,8 @@ public class FixedEntityLookHelper extends EntityLookHelper
     }
 
 
-
     public static float tan(double a, double b)
     {
-        return (float)Math.atan2(a, b);
+        return (float)FastTrig.atan2(a, b);
     }
 }
