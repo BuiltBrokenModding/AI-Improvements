@@ -12,10 +12,13 @@ import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityLookHelper;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.util.Iterator;
 
 /**
@@ -33,7 +36,6 @@ public class AIImprovements
 
     public static Logger LOGGER;
 
-
     public static boolean REMOVE_LOOK_AI = false;
     public static boolean REMOVE_LOOK_IDLE = false;
     public static boolean REPLACE_LOOK_HELPER = true;
@@ -45,21 +47,27 @@ public class AIImprovements
     }
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent evt)
+    public void preInit(FMLPreInitializationEvent event)
     {
+        Configuration config = new Configuration(new File(event.getModConfigurationDirectory(), "bbm/AI_Improvements.cfg"));
+        config.load();
+        REMOVE_LOOK_AI = config.getBoolean("RemoveEntityAIWatchClosest", Configuration.CATEGORY_GENERAL, REMOVE_LOOK_AI, "Disabled the AI segment that controls entities looking at the closest player");
+        REMOVE_LOOK_AI = config.getBoolean("RemoveEntityAILookIdle", Configuration.CATEGORY_GENERAL, REMOVE_LOOK_IDLE, "Disabled the AI segment that controls entities looking at random locations");
+        REMOVE_LOOK_AI = config.getBoolean("ReplaceLookHelper", Configuration.CATEGORY_GENERAL, REPLACE_LOOK_HELPER, "Replaces the EntityLookHelper with a more CPU efficient version");
+        config.save();
         LOGGER = LogManager.getLogger("AI_Improvements");
     }
 
     @Mod.EventHandler
-    public void init(FMLInitializationEvent evt)
+    public void init(FMLInitializationEvent event)
     {
 
     }
 
     @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent evt)
+    public void postInit(FMLPostInitializationEvent event)
     {
-
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @SubscribeEvent
