@@ -3,6 +3,9 @@ package com.builtbroken.ai.improvements;
 //http://www.java-gaming.org/index.php?topic=14647.0
 public class FastTrig
 {
+    //TODO recode to be object based to allow for several versions to exist
+    //TODO move to core when recoded
+    //TODO recode vector math to use this helper
     private static final int ATAN2_BITS = 7;
 
     private static final int ATAN2_BITS2 = ATAN2_BITS << 1;

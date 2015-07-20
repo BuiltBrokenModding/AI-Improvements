@@ -16,6 +16,9 @@ public class LookHelperTest extends AbstractTest
 {
     public static AIImprovements mod = new AIImprovements();
 
+    //TODO test math
+    //TODO test ram usage
+    //TODO test precision
     public void testTanMethod()
     {
         double a = 10;
