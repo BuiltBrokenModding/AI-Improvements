@@ -1,0 +1,23 @@
+language: java
+cache:
+  directories:
+    - $HOME/.gradle
+    - .gradle
+sudo: false
+before_install:
+  - git submodule update --init --recursive
+  - chmod a+x gradlew
+notifications:
+ irc:
+  channels:
+   - "irc.esper.net#BBM-bots"
+  template:
+   - "%{build_number} (%{branch} - %{commit}: %{commit_message} : %{author}): %{message} (%{build_url})"
+install: true
+script:
+  - ./gradlew build coveralls jacocoTestReport -PbambooshortPlanName=VoltzEngine -Pdmodcurse=61545 -S -i --refresh-dependencies
+jdk:
+  - oraclejdk7
+  - oraclejdk8
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
