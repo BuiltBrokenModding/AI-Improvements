@@ -6,7 +6,7 @@ public class FastTrig
     //TODO recode to be object based to allow for several versions to exist
     //TODO move to core when recoded
     //TODO recode vector math to use this helper
-    private static final int ATAN2_BITS = 7;
+    private static final int ATAN2_BITS = 8;
 
     private static final int ATAN2_BITS2 = ATAN2_BITS << 1;
     private static final int ATAN2_MASK = ~(-1 << ATAN2_BITS2);
@@ -14,7 +14,6 @@ public class FastTrig
     private static final int ATAN2_DIM = (int) Math.sqrt(ATAN2_COUNT);
 
     private static final float INV_ATAN2_DIM_MINUS_1 = 1.0f / (ATAN2_DIM - 1);
-    private static final float DEG = 180.0f / (float) Math.PI;
 
     private static final float[] atan2 = new float[ATAN2_COUNT];
 

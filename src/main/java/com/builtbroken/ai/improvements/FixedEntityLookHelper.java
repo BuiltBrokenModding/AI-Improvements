@@ -59,6 +59,6 @@ public class FixedEntityLookHelper extends EntityLookHelper
 
     public static float tan(double a, double b)
     {
-        return (float)FastTrig.atan2(a, b);
+        return FastTrig.atan2(a, b);
     }
 }

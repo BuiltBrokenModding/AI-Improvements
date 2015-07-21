@@ -8,6 +8,8 @@ import com.builtbroken.mc.testing.junit.VoltzTestRunner;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
 
+import java.util.Random;
+
 /**
  * Created by Dark on 7/20/2015.
  */
@@ -30,30 +32,38 @@ public class LookHelperTest extends AbstractTest
 
     public void testTiming()
     {
+        int runs = 1000000;
         long sumTan = 0;
         long sumTan2 = 0;
-        double a = 10;
-        double b = 10;
-        for (int i = 0; i < 1000; i++)
+        Random rand = new Random();
+        for (int i = 0; i < runs; i++)
         {
-            Long start = System.nanoTime();
+            double a = rand.nextFloat() * 10 - rand.nextFloat() * 10;
+            double b = rand.nextFloat() * 10 - rand.nextFloat() * 10;
+            //System.out.println("Math.atan2()  " + sumTan);
+            long time = System.nanoTime();
             float tan = (float) Math.atan2(a, b);
-            Long end = System.nanoTime();
-            sumTan += end - start;
+            time = System.nanoTime() - time;
+            sumTan += time;
+            //System.out.println("    Delta  " + time);
         }
         FastTrig.init();
-        for (int i = 0; i < 1000; i++)
+        for (int i = 0; i < runs; i++)
         {
-            Long start = System.nanoTime();
-            float tan2 = FastTrig.atan2(a, b);
-            Long end = System.nanoTime();
-            sumTan2 += end - start;
+            double a = rand.nextFloat() * 10 - rand.nextFloat() * 10;
+            double b = rand.nextFloat() * 10 - rand.nextFloat() * 10;
+            //System.out.println("FastTrig.atan2()  " + sumTan2);
+            long time = System.nanoTime();
+            float tan = FastTrig.atan2(a, b);
+            time = System.nanoTime() - time;
+            sumTan2 += time;
+            //System.out.println("    Delta  " + time);
         }
 
-        long avTan = sumTan / 1000;
-        long avTan2 = sumTan2 / 1000;
+        long avTan = sumTan / runs;
+        long avTan2 = sumTan2 / runs;
 
-        System.out.println("avTan: " + avTan + "  avTan2:" + avTan2);
+        System.out.println("Math.atan2(a, b): " + avTan + "  FastTrig.atan2(a, b):" + avTan2);
         Assert.assertTrue(avTan2 < avTan);
     }
 }
