@@ -67,6 +67,7 @@ public class AIImprovements
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
+        FastTrig.init();
         MinecraftForge.EVENT_BUS.register(this);
     }
 
