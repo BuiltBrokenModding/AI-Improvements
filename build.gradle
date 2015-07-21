@@ -42,11 +42,11 @@ buildProps.withReader {
 }
 
 if (project.getProperty("bambooshortPlanName") == "BBM-Dev") {
-    group = "dev.builtbroken.voltzengineessentials"
-    archivesBaseName = "VoltzEngineEssetials"
+    group = "dev.builtbroken.aiimprovements"
+    archivesBaseName = "AIImprovements"
 } else {
-    group = "com.builtbroken.voltzengineessentials"
-    archivesBaseName = "VoltzEngineEssentials"
+    group = "com.builtbroken.aiimprovements"
+    archivesBaseName = "AIImprovements"
 }
 
 println archivesBaseName 
@@ -94,23 +94,7 @@ processResources {
 	}
 }
 
-curse {
-    apiKey = project.dmodcurse
-    projectId = "227048"
-    // my project url is http://minecraft.curseforge.com/mc-mods/227048-voltz-engine
-    changelog = ""
-    releaseType = "alpha"
-    relatedProject 'voltz-engine': 'requiredLibrary'
-
-    // the default obfuscated jar is uploaded by default
-    // artifact = project.file("some/jar/to/upload.jar")
-
-    // allows you to add extra compatible MC versions. The one specified in the minecraft{} block is used by default.
-    addGameVersion "1.7.10"
-    // addGameversion "1.7.0", "1.7.4"
-}
-
-archivesBaseName = "VoltzEngineEssentials"
+archivesBaseName = "AIImprovements"
 
 repositories {
     maven {
@@ -148,4 +132,4 @@ def getDate() {
     return formattedDate
 }
 
-file("Voltz-Engine-Essentials.txt").text = version;
+file("AI-Improvements.txt").text = version;
