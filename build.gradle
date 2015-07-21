@@ -100,9 +100,13 @@ repositories {
 }
 
 jar {
-        manifest {
-        attributes 'FMLAT': 'AI_at.cfg'
-    }
+    manifest.mainAttributes(
+            "Built-By": System.getProperty('user.name'),
+            "Created-By": currentJvm,
+            "Implementation-Title": archivesBaseName,
+            "Implementation-Version": project.version,
+            "FMLAT": "AI_at.cfg",
+    )
 }
 
 dependencies 
