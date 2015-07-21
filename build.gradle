@@ -111,4 +111,11 @@ def getDate() {
     return formattedDate
 }
 
+jacocoTestReport {
+    reports {
+        xml.enabled = true // coveralls plugin depends on xml format report
+        html.enabled = true
+    }
+}
+
 file("AI-Improvements.txt").text = version;

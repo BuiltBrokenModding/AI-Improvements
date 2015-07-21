@@ -15,7 +15,7 @@ notifications:
    - "%{build_number} (%{branch} - %{commit}: %{commit_message} : %{author}): %{message} (%{build_url})"
 install: true
 script:
-  - ./gradlew build coveralls jacocoTestReport -PbambooshortPlanName=VoltzEngine -Pdmodcurse=61545 -S -i --refresh-dependencies
+  - ./gradlew build coveralls jacocoTestReport -PbambooshortPlanName=AIIM -Pdmodcurse=61545 -S -i --refresh-dependencies
 jdk:
   - oraclejdk7
   - oraclejdk8
