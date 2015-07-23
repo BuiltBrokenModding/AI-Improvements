@@ -27,7 +27,7 @@ public class LookHelperTest extends AbstractTest
         double b = 10;
         float tan = (float) Math.atan2(a, b);
         float tan2 = FixedEntityLookHelper.tan(a, b);
-        Assert.assertTrue(tan == tan2);
+        Assert.assertTrue("Tan return doesn't match, Math.atan2 returned " + tan +"  FastTrig.atan2 returned " + tan2,tan == tan2);
     }
 
     public void testTiming()
