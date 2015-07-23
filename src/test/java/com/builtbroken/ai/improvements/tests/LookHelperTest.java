@@ -18,6 +18,12 @@ public class LookHelperTest extends AbstractTest
 {
     public static AIImprovements mod = new AIImprovements();
 
+    @Override
+    public void setUpForEntireClass()
+    {
+        FastTrig.init();
+    }
+
     //TODO test math
     //TODO test ram usage
     //TODO test precision
@@ -25,6 +31,7 @@ public class LookHelperTest extends AbstractTest
     {
         double a = 10;
         double b = 10;
+
         float tan = (float) Math.atan2(a, b);
         float tan2 = FixedEntityLookHelper.tan(a, b);
         Assert.assertTrue("Tan return doesn't match, Math.atan2 returned " + tan +"  FastTrig.atan2 returned " + tan2,tan == tan2);
@@ -47,7 +54,6 @@ public class LookHelperTest extends AbstractTest
             sumTan += time;
             //System.out.println("    Delta  " + time);
         }
-        FastTrig.init();
         for (int i = 0; i < runs; i++)
         {
             double a = rand.nextFloat() * 10 - rand.nextFloat() * 10;
