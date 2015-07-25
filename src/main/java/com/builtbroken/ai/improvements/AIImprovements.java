@@ -24,16 +24,9 @@ import java.util.Iterator;
 /**
  * Created by Dark on 7/20/2015.
  */
-@Mod(modid = "aiimprovements", name = "AI Improvements", version = AIImprovements.VERSION, acceptableRemoteVersions = "*", canBeDeactivated = true)
+@Mod(modid = "aiimprovements", name = "AI Improvements", version = "@MAJOR@.@MINOR@.@REVIS@.@BUILD@", acceptableRemoteVersions = "*", canBeDeactivated = true)
 public class AIImprovements
 {
-
-    public static final String MAJOR_VERSION = "@MAJOR@";
-    public static final String MINOR_VERSION = "@MINOR@";
-    public static final String REVISION_VERSION = "@REVIS@";
-    public static final String BUILD_VERSION = "@BUILD@";
-    public static final String VERSION = MAJOR_VERSION + "." + MINOR_VERSION + "." + REVISION_VERSION + "." + BUILD_VERSION;
-
     public static Logger LOGGER;
 
     public static boolean REMOVE_LOOK_AI = false;
