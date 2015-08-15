@@ -24,16 +24,9 @@ import java.util.Iterator;
 /**
  * Created by Dark on 7/20/2015.
  */
-@Mod(modid = "aiimprovements", name = "AI Improvements", version = AIImprovements.VERSION, acceptableRemoteVersions = "*", canBeDeactivated = true)
+@Mod(modid = "aiimprovements", name = "AI Improvements", version = "@MAJOR@.@MINOR@.@REVIS@.@BUILD@", acceptableRemoteVersions = "*", canBeDeactivated = true)
 public class AIImprovements
 {
-
-    public static final String MAJOR_VERSION = "@MAJOR@";
-    public static final String MINOR_VERSION = "@MINOR@";
-    public static final String REVISION_VERSION = "@REVIS@";
-    public static final String BUILD_VERSION = "@BUILD@";
-    public static final String VERSION = MAJOR_VERSION + "." + MINOR_VERSION + "." + REVISION_VERSION + "." + BUILD_VERSION;
-
     public static Logger LOGGER;
 
     public static boolean REMOVE_LOOK_AI = false;
@@ -52,8 +45,8 @@ public class AIImprovements
         Configuration config = new Configuration(new File(event.getModConfigurationDirectory(), "bbm/AI_Improvements.cfg"));
         config.load();
         REMOVE_LOOK_AI = config.getBoolean("RemoveEntityAIWatchClosest", Configuration.CATEGORY_GENERAL, REMOVE_LOOK_AI, "Disabled the AI segment that controls entities looking at the closest player");
-        REMOVE_LOOK_AI = config.getBoolean("RemoveEntityAILookIdle", Configuration.CATEGORY_GENERAL, REMOVE_LOOK_IDLE, "Disabled the AI segment that controls entities looking at random locations");
-        REMOVE_LOOK_AI = config.getBoolean("ReplaceLookHelper", Configuration.CATEGORY_GENERAL, REPLACE_LOOK_HELPER, "Replaces the EntityLookHelper with a more CPU efficient version");
+        REMOVE_LOOK_IDLE = config.getBoolean("RemoveEntityAILookIdle", Configuration.CATEGORY_GENERAL, REMOVE_LOOK_IDLE, "Disabled the AI segment that controls entities looking at random locations");
+        REPLACE_LOOK_HELPER = config.getBoolean("ReplaceLookHelper", Configuration.CATEGORY_GENERAL, REPLACE_LOOK_HELPER, "Replaces the EntityLookHelper with a more CPU efficient version");
         config.save();
         LOGGER = LogManager.getLogger("AI_Improvements");
     }
@@ -74,6 +67,8 @@ public class AIImprovements
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent event)
     {
+        //TODO add improved and configurable mob spawners
+        //TODO add ability to block placing mob spawners or break them
         //TODO recode AI look classes to only run when near a player since they are only visual effects
         //TODO maybe also code to only run client side? that is if there is no effect?
         //TODO add config options for Fast math helper
