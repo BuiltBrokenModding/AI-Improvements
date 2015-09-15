@@ -29,7 +29,6 @@ apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'jacoco'
 apply from: 'https://raw.githubusercontent.com/BuiltBrokenModding/BuiltBrokenScripts/buildScripts/scripts/forge/deps.gradle'
 
-
 println "Current Minecraft version = " + minecraft.apiVersion
 
 def currentJvm = org.gradle.internal.jvm.Jvm.current()
@@ -49,7 +48,6 @@ processResources {
 		expand 'version': project.version, 'mcversion': project.minecraft.version
 		// replace version and MCVersion
 	}
-    
 
 	// copy everything else, thats not text
 	from(sourceSets.main.resources.srcDirs) {
