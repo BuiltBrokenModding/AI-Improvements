@@ -34,6 +34,10 @@ println "Current Minecraft version = " + minecraft.apiVersion
 def currentJvm = org.gradle.internal.jvm.Jvm.current()
 println "Current Java version = " + currentJvm
 
+minecraft {    
+    replace "required-after:VoltzEngine", "required-after:VoltzEngine" + voltz_engine_version
+}
+
 processResources {
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
@@ -68,7 +72,7 @@ jar {
 
 dependencies 
 {
-    compile "dev.builtbroken.voltzengine:VoltzEngine:1.7.10-0.+:deobf-dev"
+    compile "dev.builtbroken.voltzengine:VoltzEngine:1.7.10-0.6.2+:deobf-dev"
 }
 
 def getDate() {
