@@ -34,32 +34,6 @@ println "Current Minecraft version = " + minecraft.apiVersion
 def currentJvm = org.gradle.internal.jvm.Jvm.current()
 println "Current Java version = " + currentJvm
 
-minecraft {    
-    replace "required-after:VoltzEngine", "required-after:VoltzEngine" + voltz_engine_version
-}
-
-processResources {
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    // replace stuff in mcmod.info, nothing else
-	from(sourceSets.main.resources.srcDirs) {
-		//include '**/*.lang'
-		include '**/*.info'
-		include '**/*.properties'
-
-		expand 'version': project.version, 'mcversion': project.minecraft.version
-		// replace version and MCVersion
-	}
-
-	// copy everything else, thats not text
-	from(sourceSets.main.resources.srcDirs) {
-		exclude '**/*.info'
-		exclude '**/*.properties'
-	}
-}
-
 jar {
     manifest.mainAttributes(
             "Built-By": System.getProperty('user.name'),
@@ -70,9 +44,13 @@ jar {
     )
 }
 
+minecraft {    
+    replace "required-after:VoltzEngine", "required-after:VoltzEngine@[$voltz_engine_version,)"
+}
+
 dependencies 
 {
-    compile "dev.builtbroken.voltzengine:VoltzEngine:1.7.10-0.6.2+:deobf-dev"
+    compile "dev.builtbroken.voltzengine:VoltzEngine:1.7.10-$voltz_engine_version+:deobf-dev"
 }
 
 def getDate() {
