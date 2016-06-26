@@ -72,7 +72,7 @@ public class AIImprovements
         //TODO recode AI look classes to only run when near a player since they are only visual effects
         //TODO maybe also code to only run client side? that is if there is no effect?
         //TODO add config options for Fast math helper
-        Entity entity = event.entity;
+        Entity entity = event.getEntity();
         if (entity instanceof EntityLiving)
         {
             EntityLiving living = (EntityLiving) entity;
