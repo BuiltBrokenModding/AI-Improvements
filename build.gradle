@@ -44,11 +44,11 @@ jar {
     )
 }
 
-minecraft {    
-    replace "required-after:VoltzEngine", "required-after:VoltzEngine@[$voltz_engine_version,)"
+minecraft {
+    replace "required-after:voltzengine", "required-after:voltzengine@[$voltz_engine_version,)"
 }
 
-dependencies 
+dependencies
 {
     compile "dev.builtbroken.voltzengine:VoltzEngine:1.7.10-$voltz_engine_version+:deobf-dev"
 }
