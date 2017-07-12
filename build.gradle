@@ -13,7 +13,6 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
-        classpath 'org.ajoberstar:gradle-git:0.10.1'
     }
 }
 
@@ -21,14 +20,26 @@ plugins {
   id 'com.matthewprenger.cursegradle' version '1.0.9'
   id 'net.saliman.cobertura' version '2.2.5'
   id 'com.github.kt3k.coveralls' version '2.0.1'
+  id "se.bjurr.gitchangelog.git-changelog-gradle-plugin" version "1.45"
 }
 
-apply from: 'https://raw.githubusercontent.com/BuiltBrokenModding/BuiltBrokenScripts/1.11.2/index/index.gradle'
+apply from: 'https://raw.githubusercontent.com/BuiltBrokenModding/BuiltBrokenScripts/1.12/index/index.gradle'
 apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'jacoco'
 
-def currentJvm = org.gradle.internal.jvm.Jvm.current()
-println "Current Java version = " + currentJvm
+
+println archivesBaseName 
+
+targetCompatibility = '1.8'
+sourceCompatibility = '1.8'
+
+def currentJvm = org.gradle.internal.jvm.Jvm.current() 
+println "Current Java version = " + currentJvm 
+
+dependencies 
+{
+    testCompile 'junit:junit:4.11'
+}
 
 jar {
     manifest.mainAttributes(
@@ -39,22 +50,6 @@ jar {
             "FMLAT": "AI_at.cfg",
     )
 }
-/*
-minecraft {    
-    replace "required-after:VoltzEngine", "required-after:VoltzEngine@[$voltz_engine_version,)"
-}
-*/
-
-dependencies 
-{
-    //compile "dev.builtbroken.voltzengine:VoltzEngine:1.7.10-$voltz_engine_version+:deobf-dev"
-}
-
-def getDate() {
-    def date = new Date()
-    def formattedDate = date.format('yyyyMMddHHmmss')
-    return formattedDate
-}
 
 jacocoTestReport {
     reports {
@@ -62,3 +57,24 @@ jacocoTestReport {
         html.enabled = true
     }
 }
+
+task makeChangelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+    filePath = "changelog.html"
+    untaggedName = "Current release ${project.version}"
+    fromCommit = startGitRev
+    toRef =  "HEAD"
+    templateContent = """
+{{#tags}}
+<h1> Highly untested and may break world</h1>
+  <h3>{{name}}</h3>
+  <ul>
+    {{#commits}}
+    <li> <a href="https://github.com/BuiltBrokenModding/AI-Improvements/commit/{{hash}}" target=_blank> {{{message}}}</a>
+</li>
+    {{/commits}}
+  </ul>
+{{/tags}}
+"""
+}
+
+tasks.build.dependsOn makeChangelog
