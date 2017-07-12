@@ -26,7 +26,7 @@ public class FixedEntityLookHelper extends EntityLookHelper
             double d0 = this.posX - this.entity.posX;
             double d1 = this.posY - (this.entity.posY + (double) this.entity.getEyeHeight());
             double d2 = this.posZ - this.entity.posZ;
-            double d3 = (double) MathHelper.sqrt_double(d0 * d0 + d2 * d2);
+            double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
 
             //I'm sure the tan function could be replaced with sin and cos but would take more complex math
             //The trade off
