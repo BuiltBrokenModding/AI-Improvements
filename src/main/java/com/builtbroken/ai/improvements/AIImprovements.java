@@ -1,5 +1,8 @@
 package com.builtbroken.ai.improvements;
 
+import com.builtbroken.ai.improvements.overrides.OverrideHandler;
+import com.builtbroken.ai.improvements.overrides.instances.EntityOverrideAttackOnCollide;
+import com.builtbroken.ai.improvements.util.CheckFakeWorld;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLModDisabledEvent;
@@ -19,6 +22,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Iterator;
 
 /**
@@ -33,6 +39,11 @@ public class AIImprovements
     public static boolean REMOVE_LOOK_IDLE = false;
     public static boolean REPLACE_LOOK_HELPER = true;
 
+    public static File configFolder;
+    public static CheckFakeWorld fakeWorld;
+
+    Configuration config;
+
     @Mod.EventHandler
     public void disableEvent(FMLModDisabledEvent event)
     {
@@ -42,29 +53,57 @@ public class AIImprovements
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        Configuration config = new Configuration(new File(event.getModConfigurationDirectory(), "bbm/AI_Improvements.cfg"));
+        LOGGER = LogManager.getLogger("AI_Improvements");
+        fakeWorld = CheckFakeWorld.newWorld("fakeWorld");
+
+        configFolder = new File(event.getModConfigurationDirectory(), "bbm/AI_Improvements");
+
+        //Move old config, if new doesn't exist
+        File oldConfig = new File(event.getModConfigurationDirectory(), "AI_Improvements.cfg");
+        File newConfig = new File(configFolder, "AI_Improvements.cfg");
+        if (oldConfig.exists() && !newConfig.exists())
+        {
+            LOGGER.info("Moving old config file " + oldConfig + " to " + newConfig);
+            try
+            {
+                Files.move(oldConfig.toPath(), newConfig.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                oldConfig.delete();
+            }
+            catch (IOException e)
+            {
+                LOGGER.error("Failed to move config");
+                e.printStackTrace();
+            }
+        }
+
+        //Load settings
+        config = new Configuration(newConfig);
         config.load();
+
         REMOVE_LOOK_AI = config.getBoolean("RemoveEntityAIWatchClosest", Configuration.CATEGORY_GENERAL, REMOVE_LOOK_AI, "Disabled the AI segment that controls entities looking at the closest player");
         REMOVE_LOOK_IDLE = config.getBoolean("RemoveEntityAILookIdle", Configuration.CATEGORY_GENERAL, REMOVE_LOOK_IDLE, "Disabled the AI segment that controls entities looking at random locations");
         REPLACE_LOOK_HELPER = config.getBoolean("ReplaceLookHelper", Configuration.CATEGORY_GENERAL, REPLACE_LOOK_HELPER, "Replaces the EntityLookHelper with a more CPU efficient version");
-        config.save();
-        LOGGER = LogManager.getLogger("AI_Improvements");
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
-
+        OverrideHandler.registerOverride(new EntityOverrideAttackOnCollide());
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
         FastTrig.init();
+
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(OverrideHandler.INSTANCE);
+
+        OverrideHandler.INSTANCE.init(config);
+        config.save();
     }
 
-    @SubscribeEvent
+    @SubscribeEvent //TODO move to override object
     public void onEntityJoinWorld(EntityJoinWorldEvent event)
     {
         //TODO add improved and configurable mob spawners
