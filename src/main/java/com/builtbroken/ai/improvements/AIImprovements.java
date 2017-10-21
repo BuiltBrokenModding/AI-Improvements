@@ -1,6 +1,7 @@
 package com.builtbroken.ai.improvements;
 
 import com.builtbroken.ai.improvements.overrides.OverrideHandler;
+import com.builtbroken.ai.improvements.overrides.instances.EntityOverrideArrowAttack;
 import com.builtbroken.ai.improvements.overrides.instances.EntityOverrideAttackOnCollide;
 import com.builtbroken.ai.improvements.util.CheckFakeWorld;
 import cpw.mods.fml.common.Mod;
@@ -89,6 +90,7 @@ public class AIImprovements
     public void init(FMLInitializationEvent event)
     {
         OverrideHandler.registerOverride(new EntityOverrideAttackOnCollide());
+        OverrideHandler.registerOverride(new EntityOverrideArrowAttack());
     }
 
     @Mod.EventHandler

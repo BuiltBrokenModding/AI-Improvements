@@ -9,27 +9,41 @@ import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+/**
+ * Rewrite of {@link net.minecraft.entity.ai.EntityAIAttackOnCollide} to fix
+ * issues with {@link net.minecraft.entity.monster.EntityZombie} attacking
+ * to often. As well to provide better control over operation.
+ * {@link net.minecraft.entity.monster.EntitySkeleton}
+ */
 public class EntityAIAttackOnCollideOverride extends EntityAIBase
 {
     public final World worldObj;
     public final EntityCreature attacker;
+
+    /** Delay between attacks */
     public int attackTimeTrigger = 20;
 
-    /** An amount of decrementing ticks that allows the entity to attack once the tick reaches 0. */
-    int attackTick;
     /** The speed with which the mob will approach the target */
-    double speedTowardsTarget;
+    public double speedTowardsTarget;
     /** When true, the mob will continue chasing its target, even if it can't find a path to them right now. */
-    boolean longMemory;
-    /** The PathEntity of our entity. */
-    PathEntity entityPathEntity;
+    public boolean longMemory;
 
-    Class classTarget;
+    /** Entity type to attack */
+    public Class classTarget;
 
+    //Path update timer
     private int pathUpdateTimer;
+
+    //Location
     private double targetX;
     private double targetY;
     private double targetZ;
+
+    //Current path to target
+    private PathEntity entityPathEntity;
+
+    //Time until next attack
+    private int attackTick;
 
     private int failedPathFindingPenalty;
 
@@ -85,7 +99,7 @@ public class EntityAIAttackOnCollideOverride extends EntityAIBase
         this.pathUpdateTimer = 0;
     }
 
-    public boolean isTargetValid()
+    public boolean isTargetValid() //TODO replace with target selector
     {
         EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
         if (entitylivingbase == null)
@@ -167,7 +181,7 @@ public class EntityAIAttackOnCollideOverride extends EntityAIBase
             this.attackTick = Math.max(this.attackTick - 1, 0);
 
             //if in range and cool down, do attack
-            if (distance <= getAttackDistanceSQ() && this.attackTick <= 0)
+            if (distance <= getAttackDistanceSQ() && this.attackTick <= 0) //attack timer fix
             {
                 //reset attack timer
                 this.attackTick = attackTimeTrigger;
