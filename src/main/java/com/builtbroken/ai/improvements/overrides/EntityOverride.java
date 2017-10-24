@@ -3,8 +3,10 @@ package com.builtbroken.ai.improvements.overrides;
 import com.builtbroken.ai.improvements.AIImprovements;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -42,9 +44,9 @@ public class EntityOverride
         loadOverAllSettings();
 
         Set<String> ids = EntityList.func_151515_b();
-        for(String id : ids)
+        for (String id : ids)
         {
-            if(canAffectEntity(id))
+            if (canAffectEntity(id))
             {
                 loadEntitySettings(id);
             }
@@ -54,19 +56,65 @@ public class EntityOverride
 
     public boolean canAffectEntity(String id)
     {
-        if(entityByIdToEffect.contains(id))
+        if (entityByIdToEffect.contains(id))
         {
             return true;
         }
         try
         {
-            return canAffectEntity(EntityList.createEntityByName(id, AIImprovements.fakeWorld));
+            Entity entity = createEntityByName(id, AIImprovements.fakeWorld);
+            if (entity != null)
+            {
+                return canAffectEntity(entity);
+            }
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static Entity createEntityByName(String id, World world)
+    {
+        Entity entity = null;
+
+        Class oclass = (Class) EntityList.stringToClassMapping.get(id);
+        try
+        {
+
+            if (oclass != null)
+            {
+                Constructor<Entity> constructor = oclass.getConstructor(new Class[]{World.class});
+                constructor.setAccessible(true);
+                if (constructor != null)
+                {
+                    entity = constructor.newInstance(new Object[]{world});
+                }
+            }
+        }
+        catch (NoSuchMethodException e)
+        {
+            AIImprovements.LOGGER.error("EntityOverride: Couldn't find constructor 'Entity(World)' for entity[" + id + ", " + oclass + "] in order to test for AI tasks");
+            if (e.getCause() != null)
+            {
+                e.getCause().printStackTrace();
+            }
+        }
+        catch (InstantiationException e)
+        {
+            AIImprovements.LOGGER.error("EntityOverride: Failed to use constructor 'Entity(World)' for entity[" + id + ", " + oclass + "] in order to test for AI tasks");
+            if (e.getCause() != null)
+            {
+                e.getCause().printStackTrace();
+            }
+        }
+        catch (Exception exception)
+        {
+            exception.printStackTrace();
+        }
+
+        return entity;
     }
 
     public boolean canAffectEntity(Entity entity)
