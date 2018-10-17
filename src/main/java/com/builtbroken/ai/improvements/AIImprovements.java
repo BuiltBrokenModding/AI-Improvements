@@ -120,17 +120,16 @@ public class AIImprovements
             if (REMOVE_LOOK_AI || REMOVE_LOOK_IDLE)
             {
                 Iterator it = living.tasks.taskEntries.iterator();
+                Object obj;
+                EntityAITasks.EntityAITaskEntry task;
                 while (it.hasNext())
                 {
-                    Object obj = it.next();
+                    obj = it.next();
                     if (obj instanceof EntityAITasks.EntityAITaskEntry)
                     {
-                        EntityAITasks.EntityAITaskEntry task = (EntityAITasks.EntityAITaskEntry) obj;
-                        if (REMOVE_LOOK_AI && task.action instanceof EntityAIWatchClosest)
-                        {
-                            it.remove();
-                        }
-                        else if (REMOVE_LOOK_IDLE && task.action instanceof EntityAILookIdle)
+                        task = (EntityAITasks.EntityAITaskEntry) obj;
+                        if ((REMOVE_LOOK_AI && task.action instanceof EntityAIWatchClosest) ||
+                            (REMOVE_LOOK_IDLE && task.action instanceof EntityAILookIdle))
                         {
                             it.remove();
                         }
@@ -139,7 +138,7 @@ public class AIImprovements
             }
 
             //Only replace vanilla look helper to avoid overlapping mods
-            if (REPLACE_LOOK_HELPER && (living.getLookHelper() == null || living.getLookHelper().getClass() == EntityLookHelper.class))
+            if (REPLACE_LOOK_HELPER && (living.lookHelper == null || lookHelper instanceof EntityLookHelper))
             {
                 EntityLookHelper oldHelper = living.lookHelper;
                 living.lookHelper = new FixedEntityLookHelper(living);
