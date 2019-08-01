@@ -1,67 +1,32 @@
 package com.builtbroken.ai.improvements;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAITasks;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.ai.EntityLookHelper;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.controller.LookController;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.LookRandomlyGoal;
+import net.minecraft.entity.ai.goal.PrioritizedGoal;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLModDisabledEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
-import java.io.File;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Created by Dark on 7/20/2015.
  */
-@Mod(modid = "aiimprovements", name = "AI Improvements", version = "@MAJOR@.@MINOR@.@REVIS@.@BUILD@", acceptableRemoteVersions = "*", canBeDeactivated = true)
+@Mod.EventBusSubscriber
+@Mod("aiimprovements")
 public class AIImprovements
 {
-    public static Logger LOGGER;
 
-    public static boolean REMOVE_LOOK_AI = false;
-    public static boolean REMOVE_LOOK_IDLE = false;
-    public static boolean REPLACE_LOOK_HELPER = true;
-
-    @Mod.EventHandler
-    public void disableEvent(FMLModDisabledEvent event)
-    {
-        LOGGER.info("Disabling mod");
-    }
-
-    @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {
-        Configuration config = new Configuration(new File(event.getModConfigurationDirectory(), "bbm/AI_Improvements.cfg"));
-        config.load();
-        REMOVE_LOOK_AI = config.getBoolean("RemoveEntityAIWatchClosest", Configuration.CATEGORY_GENERAL, REMOVE_LOOK_AI, "Disabled the AI segment that controls entities looking at the closest player");
-        REMOVE_LOOK_IDLE = config.getBoolean("RemoveEntityAILookIdle", Configuration.CATEGORY_GENERAL, REMOVE_LOOK_IDLE, "Disabled the AI segment that controls entities looking at random locations");
-        REPLACE_LOOK_HELPER = config.getBoolean("ReplaceLookHelper", Configuration.CATEGORY_GENERAL, REPLACE_LOOK_HELPER, "Replaces the EntityLookHelper with a more CPU efficient version");
-        config.save();
-        LOGGER = LogManager.getLogger("AI_Improvements");
-    }
-
-    @Mod.EventHandler
-    public void init(FMLInitializationEvent event)
-    {
-
-    }
-
-    @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent event)
+    @SubscribeEvent
+    public static void onFMLCommonSetup(FMLCommonSetupEvent event)
     {
         FastTrig.init();
-        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @SubscribeEvent
@@ -72,24 +37,27 @@ public class AIImprovements
         //TODO recode AI look classes to only run when near a player since they are only visual effects
         //TODO maybe also code to only run client side? that is if there is no effect?
         //TODO add config options for Fast math helper
-        Entity entity = event.getEntity();
-        if (entity instanceof EntityLiving)
+        final Entity entity = event.getEntity();
+        if (entity instanceof MobEntity)
         {
-            EntityLiving living = (EntityLiving) entity;
-            if (REMOVE_LOOK_AI || REMOVE_LOOK_IDLE)
+            final MobEntity living = (MobEntity) entity;
+            if (ConfigMain.REMOVE_LOOK_AI || ConfigMain.REMOVE_LOOK_IDLE)
             {
-                Iterator it = living.tasks.taskEntries.iterator();
+                final Set<PrioritizedGoal> goals = living.goalSelector.goals();
+                final Iterator<PrioritizedGoal> it = goals.iterator();
                 while (it.hasNext())
                 {
-                    Object obj = it.next();
-                    if (obj instanceof EntityAITasks.EntityAITaskEntry)
+                    final Goal goal = it.next().getGoal();
+                    if (goal instanceof LookAtGoal)
                     {
-                        EntityAITasks.EntityAITaskEntry task = (EntityAITasks.EntityAITaskEntry) obj;
-                        if (REMOVE_LOOK_AI && task.action instanceof EntityAIWatchClosest)
+                        if (ConfigMain.REMOVE_LOOK_AI)
                         {
                             it.remove();
                         }
-                        else if (REMOVE_LOOK_IDLE && task.action instanceof EntityAILookIdle)
+                    }
+                    else if (goal instanceof LookRandomlyGoal)
+                    {
+                        if (ConfigMain.REMOVE_LOOK_IDLE)
                         {
                             it.remove();
                         }
@@ -98,18 +66,24 @@ public class AIImprovements
             }
 
             //Only replace vanilla look helper to avoid overlapping mods
-            if (REPLACE_LOOK_HELPER && (living.getLookHelper() == null || living.getLookHelper().getClass() == EntityLookHelper.class))
+            if (ConfigMain.REPLACE_LOOK_HELPER && (living.getLookController() == null || living.getLookController().getClass() == LookController.class))
             {
-                EntityLookHelper oldHelper = living.lookHelper;
-                living.lookHelper = new FixedEntityLookHelper(living);
+                //Get old so we can copy data
+                final LookController oldHelper = living.getLookController();
 
-                //Not sure if needed but updating just in case
-                living.lookHelper.posX = oldHelper.posX;
-                living.lookHelper.posX = oldHelper.posX;
-                living.lookHelper.posX = oldHelper.posX;
-                living.lookHelper.isLooking = oldHelper.isLooking;
-                living.lookHelper.deltaLookPitch = oldHelper.deltaLookPitch;
-                living.lookHelper.deltaLookYaw = oldHelper.deltaLookYaw;
+                //Set new
+                living.lookController = new FixedLookController(living);
+
+                //Instance of check may look unneeded but some mods do stupid things
+                if (living.getLookController() instanceof FixedLookController)
+                {
+                    ((FixedLookController) living.getLookController()).copyDataIntoSelf(oldHelper);
+                }
+                else
+                {
+                    //TODO error/warning in console, then mark this entity as unusable for future checks
+                }
+
             }
         }
     }
