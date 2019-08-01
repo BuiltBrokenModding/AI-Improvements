@@ -19,6 +19,7 @@ sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = co
 
 minecraft {
     mappings channel: 'snapshot', version: '20190801-1.14.3'
+	accessTransformer = file('src/main/resources/META-INF/AI_at.cfg')
 	
     runs {
         client = {
@@ -48,6 +49,6 @@ jar {
                     "Implementation-Title": "AI-Improvements",
                     "Implementation-Version": "0.2.1",
                     "Implementation-Vendor" :"Built Broken Modding",
-                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
+                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")])
     }
 }

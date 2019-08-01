@@ -1,0 +1,25 @@
+modLoader="javafml" #mandatory
+loaderVersion="[27,)" #mandatory
+issueTrackerURL="https://github.com/BuiltBrokenModding/AI-Improvements/issues"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/ai-improvements"
+authors="BuiltBrokenModding"
+
+[[mods]] #mandatory
+modId="aiimprovements" #mandatory
+version="0.0.1" #mandatory
+displayName="AI-Improvements" #mandatory
+description='''Small adjustements and improvements to AI logic focusing on optimizations for increased server performance''' #mandatory
+
+[[dependencies.aiimprovements]]
+    modId="forge"
+    mandatory=true
+    versionRange="[27,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.aiimprovements]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.14,1.15)"
+    ordering="NONE"
+    side="BOTH"

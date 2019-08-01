@@ -22,7 +22,6 @@ import java.util.Set;
 @Mod("aiimprovements")
 public class AIImprovements
 {
-
     @SubscribeEvent
     public static void onFMLCommonSetup(FMLCommonSetupEvent event)
     {
@@ -43,7 +42,7 @@ public class AIImprovements
             final MobEntity living = (MobEntity) entity;
             if (ConfigMain.REMOVE_LOOK_AI || ConfigMain.REMOVE_LOOK_IDLE)
             {
-                final Set<PrioritizedGoal> goals = living.goalSelector.goals();
+                final Set<PrioritizedGoal> goals = living.goalSelector.goals;
                 final Iterator<PrioritizedGoal> it = goals.iterator();
                 while (it.hasNext())
                 {
