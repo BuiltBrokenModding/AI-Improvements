@@ -3,10 +3,14 @@ package com.builtbroken.ai.improvements;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.controller.LookController;
+import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
+import net.minecraft.entity.ai.goal.PanicGoal;
 import net.minecraft.entity.ai.goal.PrioritizedGoal;
+import net.minecraft.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -29,7 +33,7 @@ public class AIImprovements
     }
 
     @SubscribeEvent
-    public void onEntityJoinWorld(EntityJoinWorldEvent event)
+    public static void onEntityJoinWorld(EntityJoinWorldEvent event)
     {
         //TODO add improved and configurable mob spawners
         //TODO add ability to block placing mob spawners or break them
@@ -37,7 +41,40 @@ public class AIImprovements
         //TODO maybe also code to only run client side? that is if there is no effect?
         //TODO add config options for Fast math helper
         final Entity entity = event.getEntity();
-        if (entity instanceof MobEntity)
+        if (entity instanceof AbstractFishEntity)
+        {
+            final AbstractFishEntity fish = (AbstractFishEntity) entity;
+
+            final Set<PrioritizedGoal> goals = fish.goalSelector.goals;
+            final Iterator<PrioritizedGoal> it = goals.iterator();
+            while (it.hasNext())
+            {
+                final Goal goal = it.next().getGoal();
+                if (goal instanceof RandomSwimmingGoal) //TODO build out as lambda system to save time/code
+                {
+                    if (ConfigMain.REMOVE_FISH_SWIM_GOAL)
+                    {
+                        it.remove();
+                    }
+                }
+                else if (goal instanceof AvoidEntityGoal)
+                {
+                    if (ConfigMain.REMOVE_FISH_AVOID_PLAYER)
+                    {
+                        it.remove();
+                    }
+                }
+                else if(goal instanceof PanicGoal)
+                {
+                    if(ConfigMain.REMOVE_FISH_PANIC_GOAL)
+                    {
+                        it.remove();
+                    }
+                }
+            }
+
+        }
+        else if (entity instanceof MobEntity)
         {
             final MobEntity living = (MobEntity) entity;
             if (ConfigMain.REMOVE_LOOK_AI || ConfigMain.REMOVE_LOOK_IDLE)
