@@ -13,7 +13,9 @@ import net.minecraft.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import java.util.Iterator;
@@ -26,6 +28,11 @@ import java.util.Set;
 @Mod("aiimprovements")
 public class AIImprovements
 {
+    public AIImprovements()
+    {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigMain.CONFIG_SPEC);
+    }
+
     @SubscribeEvent
     public static void onFMLCommonSetup(FMLCommonSetupEvent event)
     {
@@ -52,21 +59,21 @@ public class AIImprovements
                 final Goal goal = it.next().getGoal();
                 if (goal instanceof RandomSwimmingGoal) //TODO build out as lambda system to save time/code
                 {
-                    if (ConfigMain.REMOVE_FISH_SWIM_GOAL)
+                    if (ConfigMain.CONFIG.removeFishSwim.get())
                     {
                         it.remove();
                     }
                 }
                 else if (goal instanceof AvoidEntityGoal)
                 {
-                    if (ConfigMain.REMOVE_FISH_AVOID_PLAYER)
+                    if (ConfigMain.CONFIG.removeFishAvoidPlayer.get())
                     {
                         it.remove();
                     }
                 }
                 else if(goal instanceof PanicGoal)
                 {
-                    if(ConfigMain.REMOVE_FISH_PANIC_GOAL)
+                    if(ConfigMain.CONFIG.removeFishPanic.get())
                     {
                         it.remove();
                     }
@@ -77,7 +84,7 @@ public class AIImprovements
         else if (entity instanceof MobEntity)
         {
             final MobEntity living = (MobEntity) entity;
-            if (ConfigMain.REMOVE_LOOK_AI || ConfigMain.REMOVE_LOOK_IDLE)
+            if (ConfigMain.CONFIG.removeLookGoal.get() || ConfigMain.CONFIG.removeLookRandom.get())
             {
                 final Set<PrioritizedGoal> goals = living.goalSelector.goals;
                 final Iterator<PrioritizedGoal> it = goals.iterator();
@@ -86,14 +93,14 @@ public class AIImprovements
                     final Goal goal = it.next().getGoal();
                     if (goal instanceof LookAtGoal)
                     {
-                        if (ConfigMain.REMOVE_LOOK_AI)
+                        if (ConfigMain.CONFIG.removeLookGoal.get())
                         {
                             it.remove();
                         }
                     }
                     else if (goal instanceof LookRandomlyGoal)
                     {
-                        if (ConfigMain.REMOVE_LOOK_IDLE)
+                        if (ConfigMain.CONFIG.removeLookRandom.get())
                         {
                             it.remove();
                         }
@@ -102,7 +109,7 @@ public class AIImprovements
             }
 
             //Only replace vanilla look helper to avoid overlapping mods
-            if (ConfigMain.REPLACE_LOOK_HELPER && (living.getLookController() == null || living.getLookController().getClass() == LookController.class))
+            if (ConfigMain.CONFIG.replaceLookController.get() && (living.getLookController() == null || living.getLookController().getClass() == LookController.class))
             {
                 //Get old so we can copy data
                 final LookController oldHelper = living.getLookController();
