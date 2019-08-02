@@ -13,6 +13,8 @@ public class ConfigMain
     public static final ForgeConfigSpec CONFIG_SPEC;
     public static final ConfigMain CONFIG;
 
+    public final BooleanValue allowRemoveCalls;
+
     public final BooleanValue removeLookGoal;
     public final BooleanValue removeLookRandom;
     public final BooleanValue replaceLookController;
@@ -33,6 +35,14 @@ public class ConfigMain
     {
         //General Settings
         builder.comment("Entity Mob").push("entity.mob");
+        allowRemoveCalls = builder
+                .comment("Allow AI tasks to be removed from entities at runtime. If this is disable no per mob or per mob type removes will run.")
+                .define("allow_remove_calls", true);
+
+        builder.pop();
+
+        //Anything extending EntityMob (Animals, NPCS, Monsters, etc... basically everything)
+        builder.comment("Entity Mob").push("entity.mob");
         removeLookGoal = builder
                 .comment("Remove the look at goal (player or attack target) AI task. This will cause AIs to not face targets or walking directions.")
                 .define("remove_look_goal", false);
@@ -49,7 +59,7 @@ public class ConfigMain
         builder.pop();
 
 
-        //General Settings
+        //Anything extending AbstractFish
         builder.comment("Entity Fish").push("entity.fish");
 
         removeFishSwim = builder

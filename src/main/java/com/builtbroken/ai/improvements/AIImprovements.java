@@ -42,6 +42,7 @@ public class AIImprovements
     @SubscribeEvent
     public static void onEntityJoinWorld(EntityJoinWorldEvent event)
     {
+        final boolean allowRemoves = ConfigMain.CONFIG.allowRemoveCalls.get();
         //TODO add improved and configurable mob spawners
         //TODO add ability to block placing mob spawners or break them
         //TODO recode AI look classes to only run when near a player since they are only visual effects
@@ -50,41 +51,45 @@ public class AIImprovements
         final Entity entity = event.getEntity();
         if (entity instanceof AbstractFishEntity)
         {
-            final AbstractFishEntity fish = (AbstractFishEntity) entity;
-
-            final Set<PrioritizedGoal> goals = fish.goalSelector.goals;
-            final Iterator<PrioritizedGoal> it = goals.iterator();
-            while (it.hasNext())
+            if(allowRemoves)
             {
-                final Goal goal = it.next().getGoal();
-                if (goal instanceof RandomSwimmingGoal) //TODO build out as lambda system to save time/code
+                final AbstractFishEntity fish = (AbstractFishEntity) entity;
+
+                final Set<PrioritizedGoal> goals = fish.goalSelector.goals;
+                final Iterator<PrioritizedGoal> it = goals.iterator();
+                while (it.hasNext())
                 {
-                    if (ConfigMain.CONFIG.removeFishSwim.get())
+                    final Goal goal = it.next().getGoal();
+                    if (goal instanceof RandomSwimmingGoal)
+                        //TODO build out as lambda system to save time/code
+                        //TODO use a filter tree (goal remover loop -> mobs -> (fish -> remove calls, zombie -> remove calls))
                     {
-                        it.remove();
+                        if (ConfigMain.CONFIG.removeFishSwim.get())
+                        {
+                            it.remove();
+                        }
                     }
-                }
-                else if (goal instanceof AvoidEntityGoal)
-                {
-                    if (ConfigMain.CONFIG.removeFishAvoidPlayer.get())
+                    else if (goal instanceof AvoidEntityGoal)
                     {
-                        it.remove();
+                        if (ConfigMain.CONFIG.removeFishAvoidPlayer.get())
+                        {
+                            it.remove();
+                        }
                     }
-                }
-                else if(goal instanceof PanicGoal)
-                {
-                    if(ConfigMain.CONFIG.removeFishPanic.get())
+                    else if (goal instanceof PanicGoal)
                     {
-                        it.remove();
+                        if (ConfigMain.CONFIG.removeFishPanic.get())
+                        {
+                            it.remove();
+                        }
                     }
                 }
             }
-
         }
         else if (entity instanceof MobEntity)
         {
             final MobEntity living = (MobEntity) entity;
-            if (ConfigMain.CONFIG.removeLookGoal.get() || ConfigMain.CONFIG.removeLookRandom.get())
+            if (allowRemoves && (ConfigMain.CONFIG.removeLookGoal.get() || ConfigMain.CONFIG.removeLookRandom.get()))
             {
                 final Set<PrioritizedGoal> goals = living.goalSelector.goals;
                 final Iterator<PrioritizedGoal> it = goals.iterator();
@@ -128,6 +133,10 @@ public class AIImprovements
                 }
 
             }
+
+            //TODO squid
+            //this.goalSelector.addGoal(0, new SquidEntity.MoveRandomGoal(this));
+            //        this.goalSelector.addGoal(1, new SquidEntity.FleeGoal());
         }
     }
 }
