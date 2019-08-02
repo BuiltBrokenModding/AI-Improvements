@@ -11,6 +11,9 @@ Downloads: https://www.curseforge.com/minecraft/mc-mods/ai-improvements
 
 # Change Log
 
+# 0.2.2
+* Fixed: Crash due to invalid access transformer
+
 # 0.2.1 - Init MC 1.14.4 release, 8/1/2019 9pm Est
 * Update to 1.14.4
 * Added: fish swim remove option
