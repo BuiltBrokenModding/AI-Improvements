@@ -6,7 +6,7 @@ authors="BuiltBrokenModding"
 
 [[mods]] #mandatory
 modId="aiimprovements" #mandatory
-version="0.2.2" #mandatory
+version="${version}" #mandatory
 displayName="AI-Improvements" #mandatory
 description='''Small adjustements and improvements to AI logic focusing on optimizations for increased server performance''' #mandatory
 
