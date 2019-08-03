@@ -13,15 +13,23 @@ public class ConfigMain
     public static final ForgeConfigSpec CONFIG_SPEC;
     public static final ConfigMain CONFIG;
 
+    //Global
     public final BooleanValue allowRemoveCalls;
+    public final BooleanValue enableCallBubbling;
 
+    //Generic mob
     public final BooleanValue removeLookGoal;
     public final BooleanValue removeLookRandom;
     public final BooleanValue replaceLookController;
 
+    //Fish
     public final BooleanValue removeFishSwim;
     public final BooleanValue removeFishAvoidPlayer;
     public final BooleanValue removeFishPanic;
+
+    //Squid
+    public final BooleanValue removeSquidFlee;
+    public final BooleanValue removeRandomMove;
 
     static
     {
@@ -33,16 +41,22 @@ public class ConfigMain
 
     ConfigMain(ForgeConfigSpec.Builder builder)
     {
+        builder.comment("Entity Settings").push("entity");
+
         //General Settings
-        builder.comment("Entity Mob").push("entity.mob");
+        builder.comment("General").push("general");
         allowRemoveCalls = builder
                 .comment("Allow AI tasks to be removed from entities at runtime. If this is disable no per mob or per mob type removes will run.")
                 .define("allow_remove_calls", true);
 
+        enableCallBubbling = builder
+                .comment("Allows repeat remove calls to bubble to the top of the list to improve performance of repeat mob spawning.")
+                .define("enable_call_bubbling", true);
+
         builder.pop();
 
         //Anything extending EntityMob (Animals, NPCS, Monsters, etc... basically everything)
-        builder.comment("Entity Mob").push("entity.mob");
+        builder.comment("Entity Mob").push("mob");
         removeLookGoal = builder
                 .comment("Remove the look at goal (player or attack target) AI task. This will cause AIs to not face targets or walking directions.")
                 .define("remove_look_goal", false);
@@ -60,7 +74,7 @@ public class ConfigMain
 
 
         //Anything extending AbstractFish
-        builder.comment("Entity Fish").push("entity.fish");
+        builder.comment("Entity Fish").push("fish");
 
         removeFishSwim = builder
                 .comment("Remove the fish's random swimming pathfinder. This will cause fish to stay in position more often.")
@@ -73,6 +87,21 @@ public class ConfigMain
         removeFishAvoidPlayer = builder
                 .comment("Remove the fish's AI task to avoid players.")
                 .define("remove_avoid_player", false);
+
+        builder.pop();
+
+        //Anything extending AbstractFish
+        builder.comment("Squid Fish").push("squid");
+
+        removeSquidFlee = builder
+                .comment("Remove the squid's flee pathfinder. This will cause squid to not run away.")
+                .define("remove_flee", false);
+
+        removeRandomMove = builder
+                .comment("Remove the squid's random movement pathfinder. This will cause squid to swim around randomly.")
+                .define("remove_random_move", false);
+
+        builder.pop();
 
         builder.pop();
     }
