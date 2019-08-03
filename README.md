@@ -11,6 +11,27 @@ Downloads: https://www.curseforge.com/minecraft/mc-mods/ai-improvements
 
 # Change Log
 
+# 0.3.0
+
+## User Impact
+* Fixed: Config pathing doing 'entity.entity.entity.entity.entity'
+* Added: Support for disabling squid random swim and flee AI
+
+## Dev Impact
+* Implemented: New system for handling filtering and editing AI modification tasks. Avoids the need for a mess of IF-ELSE statements.
+* Implemented: Sorted system for remove calls, Edits most often applied will float to the top of the list to reduce CPU time used for editing mobs.
+* Added: Filter system - allows dev to filter edits to a specific mob-type or mob with settings
+* Added: Generic remove edit - allows removing based on instance check and config check
+* Added: Filter layer - allows registering a collection of edit tasks with sub layers
+* Added: Modification layer - allows handling filter layers, combat AI edits, and goal edits as a set
+* Added: Filter layer for all entities
+* Added: Filter level for mobs
+* Added: Filter level for fish
+* Added: Filter level for squid
+* Ported: look helper as a modification edit
+* Ported: fish edits as generic edits
+
+
 # 0.2.2
 * Fixed: Crash due to invalid access transformer
 
