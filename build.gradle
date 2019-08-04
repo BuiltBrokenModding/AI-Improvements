@@ -16,6 +16,9 @@ apply plugin: 'eclipse'
 //Set source level
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
+archivesBaseName=project.properties['file_name']
+group='com.builtbroken.aiimprovements'
+
 //Minecraft build settings
 minecraft {
     mappings channel: 'snapshot', version: project.properties['mcp_mappings']
