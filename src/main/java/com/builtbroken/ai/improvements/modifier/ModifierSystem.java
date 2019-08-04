@@ -9,12 +9,14 @@ import com.builtbroken.ai.improvements.modifier.filters.FilterResult;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.controller.LookController;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.entity.ai.goal.FollowSchoolLeaderGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.PanicGoal;
 import net.minecraft.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
+import net.minecraft.entity.passive.fish.PufferfishEntity;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -51,6 +53,8 @@ public class ModifierSystem
         fishEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof RandomSwimmingGoal, ConfigMain.CONFIG.removeFishSwim));
         fishEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof AvoidEntityGoal, ConfigMain.CONFIG.removeFishAvoidPlayer));
         fishEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof PanicGoal, ConfigMain.CONFIG.removeFishPanic));
+        fishEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof FollowSchoolLeaderGoal, ConfigMain.CONFIG.removeFishFollowLeader));
+        fishEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof PufferfishEntity.PuffGoal, ConfigMain.CONFIG.removeFishFollowLeader));
 
         //Squid
         mobEntityEditor.filters.add(squidEditor);

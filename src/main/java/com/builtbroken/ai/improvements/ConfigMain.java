@@ -26,6 +26,8 @@ public class ConfigMain
     public final BooleanValue removeFishSwim;
     public final BooleanValue removeFishAvoidPlayer;
     public final BooleanValue removeFishPanic;
+    public final BooleanValue removeFishFollowLeader;
+    public final BooleanValue removeFishPuff;
 
     //Squid
     public final BooleanValue removeSquidFlee;
@@ -87,6 +89,14 @@ public class ConfigMain
         removeFishAvoidPlayer = builder
                 .comment("Remove the fish's AI task to avoid players.")
                 .define("remove_avoid_player", false);
+
+        removeFishFollowLeader = builder
+                .comment("Remove the fish's AI task to follow a leader fish to act as a group of fish.")
+                .define("remove_follow_leader", false);
+
+        removeFishPuff = builder
+                .comment("Remove the fish's AI task to puff up when entities are nearby")
+                .define("remove_puff", false);
 
         builder.pop();
 
