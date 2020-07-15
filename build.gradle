@@ -41,7 +41,7 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.15.2-31.1.0'
+    minecraft project.properties['forge_version']
 }
 
 jar {
