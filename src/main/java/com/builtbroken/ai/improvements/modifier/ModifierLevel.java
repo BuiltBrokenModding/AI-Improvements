@@ -5,8 +5,8 @@ import com.builtbroken.ai.improvements.modifier.filters.FilterLayer;
 import com.builtbroken.ai.improvements.modifier.filters.FilterNode;
 import com.builtbroken.ai.improvements.modifier.filters.FilterResult;
 import com.builtbroken.ai.improvements.modifier.filters.IFilterNode;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.MobEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
 
 import java.util.function.Function;
 
@@ -35,10 +35,10 @@ public class ModifierLevel extends FilterNode
         FilterResult filterResult = action.handle(entity);
         if (filterResult != FilterResult.DID_NOTHING)
         {
-            if (entity instanceof MobEntity)
+            if (entity instanceof Mob)
             {
-                goalEditor.handle((MobEntity) entity);
-                combatGoalEditor.handle((MobEntity) entity);
+                goalEditor.handle((Mob) entity);
+                combatGoalEditor.handle((Mob) entity);
             }
             return filters.handle(entity);
         }

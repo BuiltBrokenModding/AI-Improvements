@@ -5,10 +5,10 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.GoalSelector;
-import net.minecraft.entity.ai.goal.PrioritizedGoal;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.GoalSelector;
+import net.minecraft.world.entity.ai.goal.WrappedGoal;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 8/2/2019.
@@ -39,12 +39,12 @@ public class ModifierLayer
         }
     }
 
-    public void handle(MobEntity entity)
+    public void handle(Mob entity)
     {
         final GoalSelector goalSelector = combatAI ? entity.targetSelector : entity.goalSelector;
 
         final Set<Goal> goalsToRemove = new HashSet<>();
-        for (PrioritizedGoal prioritizedGoal : goalSelector.availableGoals)
+        for (WrappedGoal prioritizedGoal : goalSelector.availableGoals)
         {
             final Goal reGoal = process(entity, prioritizedGoal.getGoal());
 
@@ -70,7 +70,7 @@ public class ModifierLayer
         }
     }
 
-    protected Goal process(MobEntity entity, Goal goal)
+    protected Goal process(Mob entity, Goal goal)
     {
         for (int i = 0; i < nodes.length; i++)
         {

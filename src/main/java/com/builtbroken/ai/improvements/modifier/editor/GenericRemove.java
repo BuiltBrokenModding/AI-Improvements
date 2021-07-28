@@ -1,8 +1,8 @@
 package com.builtbroken.ai.improvements.modifier.editor;
 
 import com.builtbroken.ai.improvements.ConfigMain;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 
 /**
@@ -20,7 +20,7 @@ public class GenericRemove implements IEntityAiModifier
     }
 
     @Override
-    public Goal handle(MobEntity entity, Goal aiTask)
+    public Goal handle(Mob entity, Goal aiTask)
     {
         return ConfigMain.CONFIG.allowRemoveCalls.get()
                 && instanceCheck.isGoal(aiTask)

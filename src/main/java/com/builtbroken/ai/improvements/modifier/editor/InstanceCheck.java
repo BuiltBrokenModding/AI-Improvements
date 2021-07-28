@@ -1,6 +1,6 @@
 package com.builtbroken.ai.improvements.modifier.editor;
 
-import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.Goal;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 8/3/2019.

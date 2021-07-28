@@ -1,6 +1,6 @@
 package com.builtbroken.ai.improvements.modifier.filters;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 8/2/2019.

@@ -1,7 +1,7 @@
 package com.builtbroken.ai.improvements.modifier.editor;
 
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 8/3/2019.
@@ -17,7 +17,7 @@ public class ModifierNode implements IEntityAiModifier
     }
 
     @Override
-    public Goal handle(MobEntity entity, Goal aiTask)
+    public Goal handle(Mob entity, Goal aiTask)
     {
         return action.handle(entity, aiTask);
     }

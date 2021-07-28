@@ -6,17 +6,17 @@ import com.builtbroken.ai.improvements.FixedLookController;
 import com.builtbroken.ai.improvements.modifier.editor.GenericRemove;
 import com.builtbroken.ai.improvements.modifier.filters.FilterLayer;
 import com.builtbroken.ai.improvements.modifier.filters.FilterResult;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.controller.LookController;
-import net.minecraft.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.entity.ai.goal.FollowSchoolLeaderGoal;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.PanicGoal;
-import net.minecraft.entity.ai.goal.RandomSwimmingGoal;
-import net.minecraft.entity.passive.SquidEntity;
-import net.minecraft.entity.passive.fish.AbstractFishEntity;
-import net.minecraft.entity.passive.fish.PufferfishEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.control.LookControl;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.ai.goal.FollowFlockLeaderGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.world.entity.animal.Squid;
+import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.world.entity.animal.Pufferfish;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -29,9 +29,9 @@ public class ModifierSystem
 {
 
     public static final FilterLayer editor = new FilterLayer(null);
-    public static final ModifierLevel mobEntityEditor = ModifierLevel.newFilter(entity -> entity instanceof MobEntity);
-    public static final ModifierLevel fishEditor = ModifierLevel.newFilter(entity -> entity instanceof AbstractFishEntity);
-    public static final ModifierLevel squidEditor = ModifierLevel.newFilter(entity -> entity instanceof SquidEntity);
+    public static final ModifierLevel mobEntityEditor = ModifierLevel.newFilter(entity -> entity instanceof Mob);
+    public static final ModifierLevel fishEditor = ModifierLevel.newFilter(entity -> entity instanceof AbstractFish);
+    public static final ModifierLevel squidEditor = ModifierLevel.newFilter(entity -> entity instanceof Squid);
 
     @SubscribeEvent
     public static void onEntityJoinWorld(EntityJoinWorldEvent event)
@@ -44,33 +44,33 @@ public class ModifierSystem
         editor.add(mobEntityEditor);
 
         //Generic remove calls
-        mobEntityEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof LookAtGoal, ConfigMain.CONFIG.removeLookGoal));
-        mobEntityEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof LookRandomlyGoal, ConfigMain.CONFIG.removeLookRandom));
-        mobEntityEditor.filters.add(entity -> replaceLookHelper((MobEntity) entity));
+        mobEntityEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof LookAtPlayerGoal, ConfigMain.CONFIG.removeLookGoal));
+        mobEntityEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof RandomLookAroundGoal, ConfigMain.CONFIG.removeLookRandom));
+        mobEntityEditor.filters.add(entity -> replaceLookHelper((Mob) entity));
 
         //Fish remove calls
         mobEntityEditor.filters.add(fishEditor);
         fishEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof RandomSwimmingGoal, ConfigMain.CONFIG.removeFishSwim));
         fishEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof AvoidEntityGoal, ConfigMain.CONFIG.removeFishAvoidPlayer));
         fishEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof PanicGoal, ConfigMain.CONFIG.removeFishPanic));
-        fishEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof FollowSchoolLeaderGoal, ConfigMain.CONFIG.removeFishFollowLeader));
-        fishEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof PufferfishEntity.PuffGoal, ConfigMain.CONFIG.removeFishFollowLeader));
+        fishEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof FollowFlockLeaderGoal, ConfigMain.CONFIG.removeFishFollowLeader));
+        fishEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof Pufferfish.PufferfishPuffGoal, ConfigMain.CONFIG.removeFishFollowLeader));
 
         //Squid
         mobEntityEditor.filters.add(squidEditor);
-        squidEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof SquidEntity.MoveRandomGoal, ConfigMain.CONFIG.removeRandomMove));
-        squidEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof SquidEntity.FleeGoal, ConfigMain.CONFIG.removeRandomMove));
+        squidEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof Squid.SquidRandomMovementGoal, ConfigMain.CONFIG.removeRandomMove));
+        squidEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof Squid.SquidFleeGoal, ConfigMain.CONFIG.removeRandomMove));
 
     }
 
 
-    private static FilterResult replaceLookHelper(MobEntity living)
+    private static FilterResult replaceLookHelper(Mob living)
     {
         //Only replace vanilla look helper to avoid overlapping mods
-        if (ConfigMain.CONFIG.replaceLookController.get() && (living.getLookControl() == null || living.getLookControl().getClass() == LookController.class))
+        if (ConfigMain.CONFIG.replaceLookController.get() && (living.getLookControl() == null || living.getLookControl().getClass() == LookControl.class))
         {
             //Get old so we can copy data
-            final LookController oldHelper = living.getLookControl();
+            final LookControl oldHelper = living.getLookControl();
 
             //Set new
             living.lookControl = new FixedLookController(living);

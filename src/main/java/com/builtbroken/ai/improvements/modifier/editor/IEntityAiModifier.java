@@ -1,7 +1,7 @@
 package com.builtbroken.ai.improvements.modifier.editor;
 
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 8/2/2019.
@@ -15,5 +15,5 @@ public interface IEntityAiModifier
      * @param entity - entity being modified
      * @return null to remove, same to skip, new to replace
      */
-    Goal handle(MobEntity entity, Goal aiTask);
+    Goal handle(Mob entity, Goal aiTask);
 }
