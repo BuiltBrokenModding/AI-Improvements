@@ -14,28 +14,37 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 
 //Set source level
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 
 archivesBaseName=project.properties['file_name']
 group='com.builtbroken.aiimprovements'
 
 //Minecraft build settings
 minecraft {
-    mappings channel: 'official', version: project.properties['mcp_mappings']
+    mappings channel: 'official', version: project.properties['mappings']
 	accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
-        client = {
-            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
+        client {
+            workingDirectory project.file('run/client')
             properties 'forge.logging.console.level': 'debug'
-            workingDirectory project.file('run').canonicalPath
-            source sourceSets.main
+
+            mods {
+                aiimprovements {
+                    source sourceSets.main
+                }
+            }
         }
-        server = {
-            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
+        server {
+            workingDirectory project.file('run/server')
             properties 'forge.logging.console.level': 'debug'
-            workingDirectory project.file('run').canonicalPath
-            source sourceSets.main
+
+            mods {
+                aiimprovements {
+                    source sourceSets.main
+                }
+            }
         }
     }
 }
@@ -53,17 +62,5 @@ jar {
                     "Implementation-Version": project.properties['version'],
                     "Implementation-Vendor" :"Built Broken Modding",
                     "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")])
-    }
-}
-
-processResources {
-    from(sourceSets.main.resources.srcDirs) {
-        include 'META-INF/mods.toml'
-
-        expand 'version': project.version
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'META-INF/mods.toml'
     }
 }
