@@ -2,22 +2,24 @@ package com.builtbroken.ai.improvements.modifier;
 
 import com.builtbroken.ai.improvements.AIImprovements;
 import com.builtbroken.ai.improvements.ConfigMain;
-import com.builtbroken.ai.improvements.FixedLookController;
+import com.builtbroken.ai.improvements.FixedLookControl;
 import com.builtbroken.ai.improvements.modifier.editor.GenericRemove;
 import com.builtbroken.ai.improvements.modifier.filters.FilterLayer;
 import com.builtbroken.ai.improvements.modifier.filters.FilterResult;
+
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.FollowFlockLeaderGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
-import net.minecraft.world.entity.animal.Squid;
 import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.Pufferfish;
+import net.minecraft.world.entity.animal.Squid;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -35,6 +37,12 @@ public class ModifierSystem
 
     @SubscribeEvent
     public static void onEntityJoinWorld(EntityJoinWorldEvent event)
+    {
+        editor.handle(event.getEntity());
+    }
+
+    @SubscribeEvent
+    public static void onSpawn(LivingSpawnEvent event)
     {
         editor.handle(event.getEntity());
     }
@@ -73,12 +81,12 @@ public class ModifierSystem
             final LookControl oldHelper = living.getLookControl();
 
             //Set new
-            living.lookControl = new FixedLookController(living);
+            living.lookControl = new FixedLookControl(living);
 
             //Instance of check may look unneeded but some mods do stupid things
-            if (living.getLookControl() instanceof FixedLookController)
+            if (living.getLookControl() instanceof FixedLookControl flc)
             {
-                ((FixedLookController) living.getLookControl()).copyDataIntoSelf(oldHelper);
+                flc.copyDataIntoSelf(oldHelper);
                 return FilterResult.MODIFIED;
             }
             else

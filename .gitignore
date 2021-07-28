@@ -3,6 +3,7 @@
 /run
 *.classpath
 *.project
+*.launch
 .settings/
 CREDITS-fml.txt
 LICENSE-fml.txt
