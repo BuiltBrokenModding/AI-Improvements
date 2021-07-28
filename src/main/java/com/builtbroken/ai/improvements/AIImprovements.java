@@ -1,6 +1,7 @@
 package com.builtbroken.ai.improvements;
 
 import com.builtbroken.ai.improvements.modifier.ModifierSystem;
+
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;

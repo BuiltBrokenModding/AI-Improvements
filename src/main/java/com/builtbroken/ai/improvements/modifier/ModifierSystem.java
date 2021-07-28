@@ -67,18 +67,18 @@ public class ModifierSystem
     private static FilterResult replaceLookHelper(MobEntity living)
     {
         //Only replace vanilla look helper to avoid overlapping mods
-        if (ConfigMain.CONFIG.replaceLookController.get() && (living.getLookController() == null || living.getLookController().getClass() == LookController.class))
+        if (ConfigMain.CONFIG.replaceLookController.get() && (living.getLookControl() == null || living.getLookControl().getClass() == LookController.class))
         {
             //Get old so we can copy data
-            final LookController oldHelper = living.getLookController();
+            final LookController oldHelper = living.getLookControl();
 
             //Set new
-            living.lookController = new FixedLookController(living);
+            living.lookControl = new FixedLookController(living);
 
             //Instance of check may look unneeded but some mods do stupid things
-            if (living.getLookController() instanceof FixedLookController)
+            if (living.getLookControl() instanceof FixedLookController)
             {
-                ((FixedLookController) living.getLookController()).copyDataIntoSelf(oldHelper);
+                ((FixedLookController) living.getLookControl()).copyDataIntoSelf(oldHelper);
                 return FilterResult.MODIFIED;
             }
             else
