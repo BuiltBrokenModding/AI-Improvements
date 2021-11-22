@@ -1,14 +1,16 @@
 package com.builtbroken.ai.improvements;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
-import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 2019-08-01.
  */
 public class ConfigMain
 {
+    public record AnimalConfigSection(BooleanValue removeFloat, BooleanValue removePanic, BooleanValue removeBreed, BooleanValue removeTempt, BooleanValue removeFollowParent, BooleanValue removeStroll) {}
 
     public static final ForgeConfigSpec CONFIG_SPEC;
     public static final ConfigMain CONFIG;
@@ -32,6 +34,13 @@ public class ConfigMain
     //Squid
     public final BooleanValue removeSquidFlee;
     public final BooleanValue removeRandomMove;
+
+    //Animals
+    public final AnimalConfigSection cow;
+    public final AnimalConfigSection chicken;
+    public final AnimalConfigSection pig;
+    public final AnimalConfigSection sheep;
+    public final BooleanValue removeSheepEatBlock;
 
     static
     {
@@ -113,6 +122,47 @@ public class ConfigMain
 
         builder.pop();
 
+        //pushing done within the method, popping dependent on the boolean parameter
+        cow = createAnimalConfigSection(builder, "Cow", "cow", "cows", true);
+        chicken = createAnimalConfigSection(builder, "Chicken", "chicken", "chickens", true);
+        pig = createAnimalConfigSection(builder, "Pig", "pig", "pigs", true);
+        sheep = createAnimalConfigSection(builder, "Sheep", "sheep", "sheep", false);
+
+        removeSheepEatBlock = builder
+                .comment("Remove the sheep's eat block AI task. This causes sheep to no longer eat grass, and thus be unable to regenerate their wool.")
+                .define("remove_eat_block", false);
+
+        builder.pop(); //pop the sheep section
+
         builder.pop();
+    }
+
+    private AnimalConfigSection createAnimalConfigSection(ForgeConfigSpec.Builder builder, String categoryComment, String singular, String plural, boolean shouldPop)
+    {
+        builder.comment(categoryComment).push(singular);
+
+        AnimalConfigSection animalConfig = new AnimalConfigSection(
+                builder.comment(String.format("Remove the %s's float AI task. This causes %s to no longer swim in water.", singular, plural))
+                .define("remove_float", false),
+
+                builder.comment(String.format("Remove the %s's panic AI task. This causes %s to no longer run around after being hit, or search water to extinguish themselves.", singular, plural))
+                .define("remove_panic", false),
+
+                builder.comment(String.format("Remove the %s's breed AI task. This causes %s to be unable to breed to create offspring.", singular, plural))
+                .define("remove_breed", false),
+
+                builder.comment(String.format("Remove the %s's tempt AI task. This causes %s to no longer follow the player if they're holding an item they like.", singular, plural))
+                .define("remove_tempt", false),
+
+                builder.comment(String.format("Remove the %s's follow parent AI task. This causes baby %s to no longer follow their parents.", singular, plural))
+                .define("remove_follow_parent", false),
+
+                builder.comment(String.format("Remove the %s's random stroll AI task. This causes %s to no longer walk around randomly.", singular, plural))
+                .define("remove_stroll", false));
+
+        if(shouldPop)
+            builder.pop();
+
+        return animalConfig;
     }
 }
