@@ -57,6 +57,8 @@ jar {
 }
 
 processResources {
+    duplicatesStrategy = 'include'
+
     from(sourceSets.main.resources.srcDirs) {
         include 'META-INF/mods.toml'
 
