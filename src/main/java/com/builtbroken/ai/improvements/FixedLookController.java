@@ -16,20 +16,20 @@ public class FixedLookController extends LookController
     }
 
     @Override
-    protected float getTargetPitch()
+    protected float getXRotD()
     {
-        double lvt_1_1_ = this.posX - this.mob.getPosX();
-        double lvt_3_1_ = this.posY - (this.mob.getPosY() + this.mob.getEyeHeight());
-        double lvt_5_1_ = this.posZ - this.mob.getPosZ();
+        double lvt_1_1_ = this.wantedX - this.mob.getX();
+        double lvt_3_1_ = this.wantedY - (this.mob.getY() + this.mob.getEyeHeight());
+        double lvt_5_1_ = this.wantedZ - this.mob.getZ();
         double lvt_7_1_ = MathHelper.sqrt(lvt_1_1_ * lvt_1_1_ + lvt_5_1_ * lvt_5_1_);
         return (float) (-(tan(lvt_3_1_, lvt_7_1_) * 57.2957763671875D));
     }
 
     @Override
-    protected float getTargetYaw()
+    protected float getYRotD()
     {
-        double lvt_1_1_ = this.posX - this.mob.getPosX();
-        double lvt_3_1_ = this.posZ - this.mob.getPosZ();
+        double lvt_1_1_ = this.wantedX - this.mob.getX();
+        double lvt_3_1_ = this.wantedZ - this.mob.getZ();
         return (float) (tan(lvt_3_1_, lvt_1_1_) * 57.2957763671875D) - 90.0F;
     }
 
@@ -41,11 +41,11 @@ public class FixedLookController extends LookController
 
     public void copyDataIntoSelf(LookController oldHelper)
     {
-        posX = oldHelper.getLookPosX();
-        posY = oldHelper.getLookPosY();
-        posZ = oldHelper.getLookPosZ();
-        isLooking = oldHelper.getIsLooking();
-        deltaLookPitch = oldHelper.deltaLookPitch;
-        deltaLookYaw = oldHelper.deltaLookYaw;
+        wantedX = oldHelper.getWantedX();
+        wantedY = oldHelper.getWantedY();
+        wantedZ = oldHelper.getWantedZ();
+        hasWanted = oldHelper.isHasWanted();
+        xMaxRotAngle = oldHelper.xMaxRotAngle;
+        yMaxRotSpeed = oldHelper.yMaxRotSpeed;
     }
 }

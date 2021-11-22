@@ -44,7 +44,7 @@ public class ModifierLayer
         final GoalSelector goalSelector = combatAI ? entity.targetSelector : entity.goalSelector;
 
         final Set<Goal> goalsToRemove = new HashSet<>();
-        for (PrioritizedGoal prioritizedGoal : goalSelector.goals)
+        for (PrioritizedGoal prioritizedGoal : goalSelector.availableGoals)
         {
             final Goal reGoal = process(entity, prioritizedGoal.getGoal());
 
