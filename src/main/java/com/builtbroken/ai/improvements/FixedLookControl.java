@@ -34,7 +34,6 @@ public class FixedLookControl extends LookControl
         return Optional.of((float) (tan(lvt_3_1_, lvt_1_1_) * 57.2957763671875D) - 90.0F);
     }
 
-
     public static float tan(double a, double b)
     {
         return FastTrig.atan2(a, b);
@@ -45,7 +44,7 @@ public class FixedLookControl extends LookControl
         wantedX = oldHelper.getWantedX();
         wantedY = oldHelper.getWantedY();
         wantedZ = oldHelper.getWantedZ();
-        hasWanted = oldHelper.isHasWanted();
+        lookAtCooldown = oldHelper.lookAtCooldown;
         xMaxRotAngle = oldHelper.xMaxRotAngle;
         yMaxRotSpeed = oldHelper.yMaxRotSpeed;
     }
