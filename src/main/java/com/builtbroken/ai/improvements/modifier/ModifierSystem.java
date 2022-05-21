@@ -3,7 +3,9 @@ package com.builtbroken.ai.improvements.modifier;
 import com.builtbroken.ai.improvements.AIImprovements;
 import com.builtbroken.ai.improvements.ConfigMain;
 import com.builtbroken.ai.improvements.ConfigMain.AnimalConfigSection;
+import com.builtbroken.ai.improvements.ConfigMain.FilteredConfigValue;
 import com.builtbroken.ai.improvements.FixedLookControl;
+import com.builtbroken.ai.improvements.modifier.editor.FilteredRemove;
 import com.builtbroken.ai.improvements.modifier.editor.GenericRemove;
 import com.builtbroken.ai.improvements.modifier.filters.FilterLayer;
 import com.builtbroken.ai.improvements.modifier.filters.FilterResult;
@@ -67,8 +69,8 @@ public class ModifierSystem
         editor.add(mobEntityEditor);
 
         //Generic remove calls
-        mobEntityEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof LookAtPlayerGoal, ConfigMain.CONFIG.removeLookGoal));
-        mobEntityEditor.goalEditor.add(new GenericRemove(goal -> goal instanceof RandomLookAroundGoal, ConfigMain.CONFIG.removeLookRandom));
+        mobEntityEditor.goalEditor.add(new FilteredRemove(goal -> goal instanceof LookAtPlayerGoal, ConfigMain.CONFIG.removeLookGoal));
+        mobEntityEditor.goalEditor.add(new FilteredRemove(goal -> goal instanceof RandomLookAroundGoal, ConfigMain.CONFIG.removeLookRandom));
         mobEntityEditor.filters.add(entity -> replaceLookHelper((Mob) entity));
 
         //Fish remove calls
@@ -104,9 +106,19 @@ public class ModifierSystem
 
     private static FilterResult replaceLookHelper(Mob living)
     {
+        FilteredConfigValue replaceLookController = ConfigMain.CONFIG.replaceLookController;
+
         //Only replace vanilla look helper to avoid overlapping mods
-        if (ConfigMain.CONFIG.replaceLookController.get() && (living.getLookControl() == null || living.getLookControl().getClass() == LookControl.class))
+        if (replaceLookController.configValue().get() && (living.getLookControl() == null || living.getLookControl().getClass() == LookControl.class))
         {
+            boolean isAllowlist = replaceLookController.isAllowlist().get();
+            String registryName = living.getType().getRegistryName().toString();
+
+            //if it's an allowlist, mobs on the filter list have their look helper replaced
+            //if it's not an allowlist (denylist), the mobs NOT on the filter list have their look helper replaced
+            if (isAllowlist != replaceLookController.filterList().get().contains(registryName))
+                return FilterResult.DID_NOTHING;
+
             //Get old so we can copy data
             final LookControl oldHelper = living.getLookControl();
 
