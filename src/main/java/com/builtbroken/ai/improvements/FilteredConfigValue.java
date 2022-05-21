@@ -32,4 +32,9 @@ public class FilteredConfigValue
 	{
 		return filterList;
 	}
+
+	public boolean isFiltered(String string)
+	{
+		return isAllowlist.get() != filterList.get().contains(string);
+	}
 }

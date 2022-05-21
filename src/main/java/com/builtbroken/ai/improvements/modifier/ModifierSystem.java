@@ -104,12 +104,9 @@ public class ModifierSystem
 		//Only replace vanilla look helper to avoid overlapping mods
 		if (replaceLookController.configValue().get() && (living.getLookControl() == null || living.getLookControl().getClass() == LookController.class))
 		{
-			boolean isAllowlist = replaceLookController.isAllowlist().get();
-			String registryName = living.getType().getRegistryName().toString();
-
 			//if it's an allowlist, mobs on the filter list have their look helper replaced
 			//if it's not an allowlist (denylist), the mobs NOT on the filter list have their look helper replaced
-			if (isAllowlist != replaceLookController.filterList().get().contains(registryName))
+			if (replaceLookController.isFiltered(living.getType().getRegistryName().toString()))
 				return FilterResult.DID_NOTHING;
 
 			//Get old so we can copy data
