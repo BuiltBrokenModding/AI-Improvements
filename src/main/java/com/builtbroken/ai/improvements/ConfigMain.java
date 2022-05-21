@@ -15,7 +15,13 @@ public class ConfigMain
 {
     public record AnimalConfigSection(BooleanValue removeFloat, BooleanValue removePanic, BooleanValue removeBreed, BooleanValue removeTempt, BooleanValue removeFollowParent, BooleanValue removeStroll) {}
 
-    public record FilteredConfigValue(BooleanValue configValue, BooleanValue isAllowlist, ConfigValue<List<? extends String>> filterList) {}
+    public record FilteredConfigValue(BooleanValue configValue, BooleanValue isAllowlist, ConfigValue<List<? extends String>> filterList)
+    {
+        public boolean isFiltered(String string)
+        {
+            return isAllowlist.get() != filterList.get().contains(string);
+        }
+    }
 
     public static final ForgeConfigSpec CONFIG_SPEC;
     public static final ConfigMain CONFIG;
