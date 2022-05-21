@@ -1,5 +1,7 @@
 package com.builtbroken.ai.improvements;
 
+import java.util.ArrayList;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -18,9 +20,9 @@ public class ConfigMain
 	public final BooleanValue enableCallBubbling;
 
 	//Generic mob
-	public final BooleanValue removeLookGoal;
-	public final BooleanValue removeLookRandom;
-	public final BooleanValue replaceLookController;
+	public final FilteredConfigValue removeLookGoal;
+	public final FilteredConfigValue removeLookRandom;
+	public final FilteredConfigValue replaceLookController;
 
 	//Fish
 	public final BooleanValue removeFishSwim;
@@ -66,18 +68,10 @@ public class ConfigMain
 
 		//Anything extending EntityMob (Animals, NPCS, Monsters, etc... basically everything)
 		builder.comment("Entity Mob").push("mob");
-		removeLookGoal = builder
-				.comment("Remove the look at goal (player or attack target) AI task. This will cause AIs to not face targets or walking directions.")
-				.define("remove_look_goal", false);
 
-		removeLookRandom = builder
-				.comment("Remove the look at random position AI task. This will cause AIs to feel a little lifeless as they do not animate head movement while idle.")
-				.define("remove_look_random", false);
-
-		replaceLookController = builder
-				.comment("Replaces the default look controller with a version featuring cached tan math improving performance. " +
-						"Only works on vanilla style mobs, if a mod overrides the look controller it will skip.")
-				.define("replace_look_controller", true);
+		removeLookGoal = createFilteredConfigValue(builder, "Remove Look Goal", "Remove the look at goal (player or attack target) AI task. This will cause AIs to not face targets or walking directions.", "remove_look_goal", false);
+		removeLookRandom = createFilteredConfigValue(builder, "Remove Look Random", "Remove the look at random position AI task. This will cause AIs to feel a little lifeless as they do not animate head movement while idle.", "remove_look_random", false);
+		replaceLookController = createFilteredConfigValue(builder, "Replace Look Controller", "Replaces the default look controller with a version featuring cached tan math improving performance. Only works on vanilla style mobs, if a mod overrides the look controller it will skip.", "replace_look_controller", true);
 
 		builder.pop();
 
@@ -162,5 +156,24 @@ public class ConfigMain
 			builder.pop();
 
 		return animalConfig;
+	}
+
+	private FilteredConfigValue createFilteredConfigValue(ForgeConfigSpec.Builder builder, String section, String comment, String path, boolean defaultValue) {
+		FilteredConfigValue filteredConfigValue;
+
+		builder.comment(section).push(path);
+
+		filteredConfigValue = new FilteredConfigValue(
+				builder.comment(comment)
+				.define(path, defaultValue),
+
+				builder.comment("Set this to true to apply this setting to all mobs on the filter list. Set this to false to NOT apply this to mobs on the filter list.")
+				.define("is_allowlist", false),
+
+				builder.comment("The list of mobs that is affected by this setting according to is_allowlist")
+				.defineList("filter_list", new ArrayList<>(), e -> e instanceof String));
+
+		builder.pop();
+		return filteredConfigValue;
 	}
 }
