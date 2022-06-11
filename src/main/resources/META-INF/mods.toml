@@ -1,6 +1,6 @@
 modLoader="javafml" #mandatory
-loaderVersion="[38,)" #mandatory
-license="MIT License https://github.com/BuiltBrokenModding/AI-Improvements/blob/1.18/LICENSE"
+loaderVersion="[41,)" #mandatory
+license="MIT License https://github.com/BuiltBrokenModding/AI-Improvements/blob/1.19/LICENSE"
 issueTrackerURL="https://github.com/BuiltBrokenModding/AI-Improvements/issues"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/ai-improvements"
 authors="BuiltBrokenModding"
@@ -14,13 +14,13 @@ description='''Small adjustements and improvements to AI logic focusing on optim
 [[dependencies.aiimprovements]]
     modId="forge"
     mandatory=true
-    versionRange="[38,)"
+    versionRange="[41,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.aiimprovements]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.18,1.19)"
+    versionRange="[1.19,1.20)"
     ordering="NONE"
     side="BOTH"

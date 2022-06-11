@@ -5,6 +5,7 @@ import com.builtbroken.ai.improvements.ConfigMain.FilteredConfigValue;
 
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class FilteredRemove implements IEntityAiModifier
 {
@@ -24,7 +25,7 @@ public class FilteredRemove implements IEntityAiModifier
         {
             //if it's an allowlist, mobs on the filter list should be handled
             //if it's not an allowlist (denylist), the mobs NOT on the filter should be handled
-            if (!filteredConfigValue.isFiltered(entity.getType().getRegistryName().toString()) && filteredConfigValue.configValue().get())
+            if (!filteredConfigValue.isFiltered(ForgeRegistries.ENTITIES.getKey(entity.getType()).toString()) && filteredConfigValue.configValue().get())
             {
                 return null;
             }

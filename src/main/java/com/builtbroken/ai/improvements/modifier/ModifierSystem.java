@@ -35,6 +35,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 8/3/2019.
@@ -113,8 +114,10 @@ public class ModifierSystem
         {
             //if it's an allowlist, mobs on the filter list have their look helper replaced
             //if it's not an allowlist (denylist), the mobs NOT on the filter list have their look helper replaced
-            if (replaceLookController.isFiltered(living.getType().getRegistryName().toString()))
+            if (replaceLookController.isFiltered(ForgeRegistries.ENTITIES.getKey(living.getType()).toString()))
+            {
                 return FilterResult.DID_NOTHING;
+            }
 
             //Get old so we can copy data
             final LookControl oldHelper = living.getLookControl();
