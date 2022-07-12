@@ -14,7 +14,7 @@ description='''Small adjustements and improvements to AI logic focusing on optim
 [[dependencies.aiimprovements]]
     modId="forge"
     mandatory=true
-    versionRange="[41,)"
+    versionRange="[41.0.94,)"
     ordering="NONE"
     side="BOTH"
 

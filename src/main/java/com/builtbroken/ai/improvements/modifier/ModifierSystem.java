@@ -31,7 +31,7 @@ import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.entity.animal.Pufferfish;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.animal.Squid;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -54,7 +54,7 @@ public class ModifierSystem
     public static final ModifierLevel sheepEditor = ModifierLevel.newFilter(entity -> entity instanceof Sheep);
 
     @SubscribeEvent
-    public static void onEntityJoinWorld(EntityJoinWorldEvent event)
+    public static void onEntityJoinWorld(EntityJoinLevelEvent event)
     {
         editor.handle(event.getEntity());
     }
@@ -114,7 +114,7 @@ public class ModifierSystem
         {
             //if it's an allowlist, mobs on the filter list have their look helper replaced
             //if it's not an allowlist (denylist), the mobs NOT on the filter list have their look helper replaced
-            if (replaceLookController.isFiltered(ForgeRegistries.ENTITIES.getKey(living.getType()).toString()))
+            if (replaceLookController.isFiltered(ForgeRegistries.ENTITY_TYPES.getKey(living.getType()).toString()))
             {
                 return FilterResult.DID_NOTHING;
             }

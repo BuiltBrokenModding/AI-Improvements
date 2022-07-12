@@ -25,7 +25,7 @@ public class FilteredRemove implements IEntityAiModifier
         {
             //if it's an allowlist, mobs on the filter list should be handled
             //if it's not an allowlist (denylist), the mobs NOT on the filter should be handled
-            if (!filteredConfigValue.isFiltered(ForgeRegistries.ENTITIES.getKey(entity.getType()).toString()) && filteredConfigValue.configValue().get())
+            if (!filteredConfigValue.isFiltered(ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString()) && filteredConfigValue.configValue().get())
             {
                 return null;
             }
