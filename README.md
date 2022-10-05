@@ -11,6 +11,11 @@ Downloads: https://www.curseforge.com/minecraft/mc-mods/ai-improvements
 
 # Change Log
 
+# 0.5.2
+
+## User Impact
+* Performance: Removed listener for LivingSpawnEvent. It is not needed, and added unnecessary overhead
+
 # 0.5.1
 
 ## User Impact
