@@ -11,6 +11,28 @@ Downloads: https://www.curseforge.com/minecraft/mc-mods/ai-improvements
 
 # Change Log
 
+# 0.5.2
+
+## User Impact
+* Performance: Removed listener for LivingSpawnEvent. It is not needed, and added unnecessary overhead
+
+# 0.5.0
+
+## User Impact
+* Added: Ability to define which entities are affected by the remove look goal, remove look random, replace look controller configs
+    * Comes with a reset of those config values
+* Fixed: Crash involving the filter system
+
+## Dev Impact
+* Added: Noop filter node
+* Added: Filtered remove modifier to handle remove calls that are backed by a filtered config value
+
+# 0.4.0
+
+## User Impact
+* Added: Support for disabling floating, panicking, breeding, tempting, follow parent, and stroll AI from cows, chickens, pigs, and sheep
+* Added: Support for disabling eat block AI from sheep
+
 # 0.3.0
 
 ## User Impact
