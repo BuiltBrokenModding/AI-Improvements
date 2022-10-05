@@ -32,7 +32,6 @@ import net.minecraft.world.entity.animal.Pufferfish;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.animal.Squid;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -55,12 +54,6 @@ public class ModifierSystem
 
     @SubscribeEvent
     public static void onEntityJoinWorld(EntityJoinLevelEvent event)
-    {
-        editor.handle(event.getEntity());
-    }
-
-    @SubscribeEvent
-    public static void onSpawn(LivingSpawnEvent event)
     {
         editor.handle(event.getEntity());
     }
