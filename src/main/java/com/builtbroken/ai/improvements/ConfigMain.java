@@ -1,12 +1,10 @@
 package com.builtbroken.ai.improvements;
 
 import java.util.List;
-
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 import org.apache.commons.lang3.tuple.Pair;
-
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
-import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 2019-08-01.
@@ -23,7 +21,7 @@ public class ConfigMain
         }
     }
 
-    public static final ForgeConfigSpec CONFIG_SPEC;
+    public static final ModConfigSpec CONFIG_SPEC;
     public static final ConfigMain CONFIG;
 
     //Global
@@ -55,13 +53,13 @@ public class ConfigMain
 
     static
     {
-        Pair<ConfigMain, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(ConfigMain::new);
+        Pair<ConfigMain, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(ConfigMain::new);
 
         CONFIG_SPEC = specPair.getRight();
         CONFIG = specPair.getLeft();
     }
 
-    ConfigMain(ForgeConfigSpec.Builder builder)
+    ConfigMain(ModConfigSpec.Builder builder)
     {
         builder.comment("Entity Settings").push("entity");
 
@@ -140,7 +138,7 @@ public class ConfigMain
         builder.pop();
     }
 
-    private AnimalConfigSection createAnimalConfigSection(ForgeConfigSpec.Builder builder, String categoryComment, String singular, String plural, boolean shouldPop)
+    private AnimalConfigSection createAnimalConfigSection(ModConfigSpec.Builder builder, String categoryComment, String singular, String plural, boolean shouldPop)
     {
         builder.comment(categoryComment).push(singular);
 
@@ -169,7 +167,7 @@ public class ConfigMain
         return animalConfig;
     }
 
-    private FilteredConfigValue createFilteredConfigValue(ForgeConfigSpec.Builder builder, String section, String comment, String path, boolean defaultValue) {
+    private FilteredConfigValue createFilteredConfigValue(ModConfigSpec.Builder builder, String section, String comment, String path, boolean defaultValue) {
         FilteredConfigValue filteredConfigValue;
 
         builder.comment(section).push(path);

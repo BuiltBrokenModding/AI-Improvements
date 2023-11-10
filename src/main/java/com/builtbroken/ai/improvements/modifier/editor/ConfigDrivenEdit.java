@@ -2,7 +2,7 @@ package com.builtbroken.ai.improvements.modifier.editor;
 
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 8/3/2019.

@@ -31,10 +31,10 @@ import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.entity.animal.Pufferfish;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.animal.Squid;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.registries.ForgeRegistries;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 8/3/2019.

@@ -5,7 +5,7 @@ import com.builtbroken.ai.improvements.ConfigMain.FilteredConfigValue;
 
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public class FilteredRemove implements IEntityAiModifier
 {
