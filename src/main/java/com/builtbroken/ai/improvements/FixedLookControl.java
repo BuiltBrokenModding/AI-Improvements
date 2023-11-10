@@ -1,10 +1,10 @@
 package com.builtbroken.ai.improvements;
 
-import java.util.Optional;
-
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.control.LookControl;
+
+import java.util.Optional;
 
 /**
  * Created by Dark on 7/20/2015.

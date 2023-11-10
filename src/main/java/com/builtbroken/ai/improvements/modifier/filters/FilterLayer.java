@@ -1,9 +1,9 @@
 package com.builtbroken.ai.improvements.modifier.filters;
 
+import net.minecraft.world.entity.Entity;
+
 import java.util.Arrays;
 import java.util.Comparator;
-
-import net.minecraft.world.entity.Entity;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 8/2/2019.
