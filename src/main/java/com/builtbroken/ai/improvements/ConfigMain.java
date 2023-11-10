@@ -1,10 +1,11 @@
 package com.builtbroken.ai.improvements;
 
-import java.util.List;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.List;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 2019-08-01.
