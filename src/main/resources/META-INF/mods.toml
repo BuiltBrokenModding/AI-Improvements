@@ -14,7 +14,7 @@ description='''Small adjustments and improvements to AI logic focusing on optimi
 [[dependencies.aiimprovements]]
     modId="neoforge"
     mandatory=true
-    versionRange="[20.2,)"
+    versionRange="[20.2.59-beta,)"
     ordering="NONE"
     side="BOTH"
 

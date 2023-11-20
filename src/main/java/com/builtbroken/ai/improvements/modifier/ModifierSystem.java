@@ -9,6 +9,8 @@ import com.builtbroken.ai.improvements.modifier.editor.FilteredRemove;
 import com.builtbroken.ai.improvements.modifier.editor.GenericRemove;
 import com.builtbroken.ai.improvements.modifier.filters.FilterLayer;
 import com.builtbroken.ai.improvements.modifier.filters.FilterResult;
+
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.goal.*;
@@ -16,7 +18,6 @@ import net.minecraft.world.entity.animal.*;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 /**
  * Created by Dark(DarkGuardsman, Robert) on 8/3/2019.
@@ -89,7 +90,7 @@ public class ModifierSystem
         {
             //if it's an allowlist, mobs on the filter list have their look helper replaced
             //if it's not an allowlist (denylist), the mobs NOT on the filter list have their look helper replaced
-            if (replaceLookController.isFiltered(ForgeRegistries.ENTITY_TYPES.getKey(living.getType()).toString()))
+            if (replaceLookController.isFiltered(BuiltInRegistries.ENTITY_TYPE.getKey(living.getType()).toString()))
             {
                 return FilterResult.DID_NOTHING;
             }
