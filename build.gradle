@@ -2,7 +2,7 @@ plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
-	id 'net.neoforged.gradle.userdev' version '7.0.+'
+	id 'net.neoforged.moddev' version '2.0.82'
 }
 
 //Set source level
@@ -15,24 +15,31 @@ base {
 
 group='com.builtbroken.aiimprovements'
 
-//Minecraft build settings
-minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
+neoForge {
+	version = project.properties['neoforge_version']
 
-runs {
-    configureEach {
-        systemProperty 'forge.logging.console.level', 'debug'
-		modSource project.sourceSets.main
-    }
-	client {
-        workingDirectory project.file('run/client')
+	runs {
+		configureEach {
+			logLevel = org.slf4j.event.Level.DEBUG
+			gameDirectory = project.file("run/" + name)
+			ideName = "AIImprovements " + ideName.get()
+		}
+
+		client {
+			client()
+		}
+
+		server {
+			server()
+			programArgument('-nogui')
+		}
 	}
-    server {
-        workingDirectory project.file('run/server')
-    }
-}
 
-dependencies {
-    implementation project.properties['forge_version']
+	mods {
+		aiimprovements {
+			sourceSet(sourceSets.main)
+		}
+	}
 }
 
 tasks.named('jar', Jar).configure {
@@ -48,4 +55,11 @@ tasks.named('jar', Jar).configure {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+}
+
+idea {
+	module {
+		downloadSources = true
+		downloadJavadoc = true
+	}
 }
