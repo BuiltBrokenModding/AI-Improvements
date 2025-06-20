@@ -1,4 +1,4 @@
-license="MIT License https://github.com/BuiltBrokenModding/AI-Improvements/blob/1.21.5/LICENSE"
+license="MIT License https://github.com/BuiltBrokenModding/AI-Improvements/blob/1.21.6/LICENSE"
 issueTrackerURL="https://github.com/BuiltBrokenModding/AI-Improvements/issues"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/ai-improvements"
 authors="BuiltBrokenModding"
@@ -12,13 +12,13 @@ description='''Small adjustments and improvements to AI logic focusing on optimi
 [[dependencies.aiimprovements]]
     modId="neoforge"
     type="required"
-    versionRange="[21.5.11-beta,)"
+    versionRange="[21.6.6-beta,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.aiimprovements]]
     modId="minecraft"
     type="required"
-    versionRange="[1.21.5,1.22)"
+    versionRange="[1.21.6,1.22)"
     ordering="NONE"
     side="BOTH"
