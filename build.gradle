@@ -2,7 +2,7 @@ plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
-	id 'net.neoforged.moddev' version '2.0.82'
+	id 'net.neoforged.moddev' version '2.0.123'
 }
 
 //Set source level
@@ -17,6 +17,7 @@ group='com.builtbroken.aiimprovements'
 
 neoForge {
 	version = project.properties['neoforge_version']
+    validateAccessTransformers = true
 
 	runs {
 		configureEach {
