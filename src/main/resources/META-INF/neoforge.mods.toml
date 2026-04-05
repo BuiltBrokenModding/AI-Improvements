@@ -3,22 +3,22 @@ issueTrackerURL="https://github.com/BuiltBrokenModding/AI-Improvements/issues"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/ai-improvements"
 authors="BuiltBrokenModding"
 
-[[mods]] #mandatory
-modId="aiimprovements" #mandatory
-version="${file.jarVersion}" #mandatory
-displayName="AI-Improvements" #mandatory
-description='''Small adjustments and improvements to AI logic focusing on optimizations for increased server performance''' #mandatory
+[[mods]]
+    modId="aiimprovements"
+    version="${file.jarVersion}"
+    displayName="AI-Improvements"
+    description='''Small adjustments and improvements to AI logic focusing on optimizations for increased server performance'''
 
 [[dependencies.aiimprovements]]
     modId="neoforge"
     type="required"
-    versionRange="[21,)"
+    versionRange="[26,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.aiimprovements]]
     modId="minecraft"
     type="required"
-    versionRange="[1.21.11,)"
+    versionRange="[26,)"
     ordering="NONE"
     side="BOTH"
