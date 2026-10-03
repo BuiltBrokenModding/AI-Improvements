@@ -12,13 +12,13 @@ authors="BuiltBrokenModding"
 [[dependencies.aiimprovements]]
     modId="neoforge"
     type="required"
-    versionRange="[26,)"
+    versionRange="[26.3.0.37-beta,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.aiimprovements]]
     modId="minecraft"
     type="required"
-    versionRange="[26,)"
+    versionRange="[26.3,)"
     ordering="NONE"
     side="BOTH"

@@ -20,7 +20,7 @@ public class AIImprovements
 
     public AIImprovements(ModContainer modContainer)
     {
-    	modContainer.registerConfig(ModConfig.Type.COMMON, ConfigMain.CONFIG_SPEC);
+    	modContainer.registerConfig(ModConfig.Type.LOCAL, ConfigMain.CONFIG_SPEC);
     }
 
     @SubscribeEvent
